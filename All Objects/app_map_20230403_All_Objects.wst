@@ -1,0 +1,411 @@
+_WS&GROUP#01 Source#Adventure Works#
+_WS&GROUP#20 Projects#Peer Review#
+_WS&GROUP#20 Projects#SSAS Template#
+_WS&GROUP#Release#Release 001#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_PurchaseOrderShipping#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_DimStandardsTestObje01#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest065TableN#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest072Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest073Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest074Column#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#AdventureWorks#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_ProductVendor#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_PurchaseOrderDetail#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest075Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest076Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest077Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest078Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest079Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest080TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest081TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest082TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest090Projec#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest091Source#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest092ODS#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest150TableC#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest155TableC#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest156TabCDL#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest160TableC#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest300StoreP#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest210Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest200TableN#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest160TableC#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest156TabCDL#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest155TableC#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest150TableC#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest092ODS#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest091Source#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest090Projec#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest082TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest081TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest080TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest079Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest078Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest077Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest076Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest075Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest074Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest073Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest072Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest071Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest070TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest069TableM#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest065TableN#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest060TableN#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest055Keys#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest051Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest011Modifi#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest010Harmfu#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest009PoorPe#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest002IndexF#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateStandardsTest001TableF#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateFactStandardsTestResul#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateFactStandardsTestRes99#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateFactStandardsTestRes01#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestRules#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestRule99#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestObject#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestObje99#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestObje04#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestObje03#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestObje02#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDimStandardsTestObje01#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#UpdateDatabaseTest051ColumnU#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#TestRules#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#TestParentObjects#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#TestObjects#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTestResult#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest999#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest300StoreProcUsage#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest210ColumnsNames#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest200TableNames#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest160TableColumPreffixSuffix#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest156TableColumDatatypeDataLength#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest155TableColumDatatypePercisionScale#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest150TableColumnsDatatype#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest092ODS#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest091SourceSystems#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest090Projects#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest082TableMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest081TableMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest080TableMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest079ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest078ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest077ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest076ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest075ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest074ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest073ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest072ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest071ColumnMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest070TableMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest069TableMetaData#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest065TableName#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest060TableNameCase#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest055Keys#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest051ColumnUnderscore#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest011ModifiedProcedures#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest010HarmfulCode#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest009PoorPerformanceCode#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest002IndexFilegroup#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#StandardsTest001TableFilegroup#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#stage_database_test071_idx_x#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#stage_database_test001_idx_x#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#ProcessStandardTabular#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#PostDatabaseTablesMetadata#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#PostDatabaseRoutinesUsage#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#PostDatabaseColumnsMetadat#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#GetFactStandardsTestResulKey#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#GetDimStandardsTestRulesKey#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#GetDimStandardsTestParentKey#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#GetDimStandardsTestObjectKey#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#FactStandardsTestResults99#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#FactStandardsTestResults01#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#FactStandardsTestResult#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestRules99#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestRules#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestParentObjects#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestParent#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestObjects99#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestObjects04#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestObjects03#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestObjects02#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestObjects01#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DimStandardsTestObjects#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseVersionHistory#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseTestRules#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseTablesMetadata#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseTables#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseSchemas#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseRoutinesUsage#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseRoutinesMetadata#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseRoutines#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseNameExceptions#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseIndexesMetadata#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseIndexes#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseHarmfulCode#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseFilegroups#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseDevelopers#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseContraints#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseColumnsMetadata#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#DatabaseColumns#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#CustomSendStandardsEmailv2#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#CustomSendStandardsEmail#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_PurchaseOrderShi#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest200TableN#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest210Column#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest300StoreP#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest999#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_FactStandardsTestResul#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#get_FactStandardsTestResul_key#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#Split_On_Upper_Case#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_DimStandardsTestObject#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#get_DimStandardsTestObject_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_PurchaseOrderShippedBy#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_dim_PurchaseOrderShipp#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseFilegroups#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseIndexes#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseRoutines#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseRoutinesMetada#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseSchemas#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseTables#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#post_DatabaseVersionHistory#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#get_dim_PurchaseOrderShipp_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_PurchaseOrderShipp_idx_0#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_PurchaseOrderShipp_idx_A#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimShippingMethod#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_DimShippingMethod#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#get_DimShippingMethod_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimShippingMethod_idx_0#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimShippingMethod_idx_A#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Purchases01#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Purchases01#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Purchases99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Purchases99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_Purchases#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_fact_Purchases#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_Purchases_idx_1#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_shippingdate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_Product#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_CountryRegionCurrency#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_Currency#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_CurrencyRate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_PurchaseOrderHeader#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_ShipMethod#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_Vendor#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_DimShippingMethod99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_DimShippingMetho#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest071Column#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_DimVendor99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_DimVendor99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimVendorList#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#get_DimStandardsTestRules_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_dim_DimVendorList#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#get_dim_DimVendorList_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_DimVendorList_idx_0#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_DimVendorList_idx_A#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Purchases02#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Purchases02#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#get_dimDimVendorList_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#get_DimVendorList_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Purchases98#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Purchases98#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_PurchasesVendor#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_fact_PurchasesVendor#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_PurchaseDate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_PurchaseDate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_Orderdate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_Customer#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_PersonCreditCard#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#dim_duedate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_PurchasesVendor_idx_1#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_PurchasesVendor_idx_2#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_PurchasesVendor_idx_3#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_PurchasesVendor_idx_4#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_PurchasesVendor_idx_A#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_DimProduct99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_DimProduct#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimProduct#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_DimProduct#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#get_DimProduct_key#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimProduct_idx_0#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#DimProduct_idx_A#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Item01#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Item01#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Item02#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Item02#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#stage_fact_Item99#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_stage_fact_Item99#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#wsl_tabular_data_model#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#SSAS#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#wsl_tabular_data_model_1#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_Item#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#update_fact_Item#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_Item_idx_1#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#fact_Item_idx_A#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#custom_stage_date#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#stage_date01#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#update_stage_date01#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#update_dim_date_cr#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#dim_date_cr_idx_0#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#dim_date_cr_idx_A#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#stage_date_idx_A#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#DimDateTDM#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#SampleSSASjson_copy#
+_WS&OBJGROUPPROJECT##DataVault#h_category#
+_WS&OBJGROUPPROJECT##DataVault#h_category_463de2f5_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_category_463de2f5_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#h_customer#
+_WS&OBJGROUPPROJECT##DataVault#h_customer_675ca5d5_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_customer_675ca5d5_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#h_employee#
+_WS&OBJGROUPPROJECT##DataVault#h_employee_8a5e0ca5_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_employee_8a5e0ca5_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#h_order#
+_WS&OBJGROUPPROJECT##DataVault#h_order_25f5fcb7_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_order_25f5fcb7_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#h_product#
+_WS&OBJGROUPPROJECT##DataVault#h_product_b5ea8c18_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_product_b5ea8c18_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#h_shipper#
+_WS&OBJGROUPPROJECT##DataVault#h_shipper_433d9c8a_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_shipper_433d9c8a_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#h_supplier#
+_WS&OBJGROUPPROJECT##DataVault#h_supplier_e0171fc3_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#h_supplier_e0171fc3_idx_A#
+_WS&OBJGROUPPROJECT##DataVault#l_order_details#
+_WS&OBJGROUPPROJECT##DataVault#l_order_detail_bfb97be_idx_1#
+_WS&OBJGROUPPROJECT##DataVault#l_order_detail_bfb97be_idx_2#
+_WS&OBJGROUPPROJECT##DataVault#l_order_detail_bfb97be_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#l_order_shippers_employee_customer#
+_WS&OBJGROUPPROJECT##DataVault#l_order_shipp_628d8f86_idx_1#
+_WS&OBJGROUPPROJECT##DataVault#l_order_shipp_628d8f86_idx_2#
+_WS&OBJGROUPPROJECT##DataVault#l_order_shipp_628d8f86_idx_3#
+_WS&OBJGROUPPROJECT##DataVault#l_order_shipp_628d8f86_idx_4#
+_WS&OBJGROUPPROJECT##DataVault#l_order_shipp_628d8f86_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#l_products_categories_suppliers#
+_WS&OBJGROUPPROJECT##DataVault#l_products_ca_a5a8892c_idx_1#
+_WS&OBJGROUPPROJECT##DataVault#l_products_ca_a5a8892c_idx_2#
+_WS&OBJGROUPPROJECT##DataVault#l_products_ca_a5a8892c_idx_3#
+_WS&OBJGROUPPROJECT##DataVault#l_products_ca_a5a8892c_idx_PK#
+_WS&OBJGROUPPROJECT##DataVault#s_category_lroc#
+_WS&OBJGROUPPROJECT##DataVault#s_customer_lroc#
+_WS&OBJGROUPPROJECT##DataVault#s_customer_mroc#
+_WS&OBJGROUPPROJECT##DataVault#s_employee_lroc#
+_WS&OBJGROUPPROJECT##DataVault#s_employee_mroc#
+_WS&OBJGROUPPROJECT##DataVault#s_order_details_transact#
+_WS&OBJGROUPPROJECT##DataVault#s_order_mroc#
+_WS&OBJGROUPPROJECT##DataVault#s_product_mroc#
+_WS&OBJGROUPPROJECT##DataVault#s_shipper_mroc#
+_WS&OBJGROUPPROJECT##DataVault#s_supplier_mroc#
+_WS&OBJGROUPPROJECT#Release#Release 001#AdventureWorks#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_CountryRegionCurrency#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_Currency#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_CurrencyRate#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_Customer#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_PersonCreditCard#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_Product#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_ProductVendor#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_PurchaseOrderDetail#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_PurchaseOrderHeader#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesOrderDetail#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesOrderHeader#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesOrderHeaderSalesReason#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesPerson#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesPersonQuotaHistory#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesReason#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesTaxRate#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesTerritory#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SalesTerritoryHistory#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_ShipMethod#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_ShoppingCartItem#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SpecialOffer#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_SpecialOfferProduct#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_Store#
+_WS&OBJGROUPPROJECT#Release#Release 001#load_Vendor#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_DimProduct99#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_DimProduct#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_DimShippingMethod99#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_DimShippingMetho#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_DimVendor99#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_DimVendor99#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Item01#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Item01#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Item02#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Item02#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Item99#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Item99#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Purchases01#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Purchases01#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Purchases02#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Purchases02#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Purchases98#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Purchases98#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_fact_Purchases99#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_fact_Purchases99#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_PurchaseDate#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_PurchaseDate#
+_WS&OBJGROUPPROJECT#Release#Release 001#stage_PurchaseOrderShipping#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_stage_PurchaseOrderShi#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_Item#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_Item_idx_1#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_Item_idx_A#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_fact_Item#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_Purchases#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_Purchases_idx_1#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_fact_Purchases#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_PurchasesVendor#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_PurchasesVendor_idx_1#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_PurchasesVendor_idx_2#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_PurchasesVendor_idx_3#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_PurchasesVendor_idx_4#
+_WS&OBJGROUPPROJECT#Release#Release 001#fact_PurchasesVendor_idx_A#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_fact_PurchasesVendor#
+_WS&OBJGROUPPROJECT#Release#Release 001#get_dim_DimVendorList_key#
+_WS&OBJGROUPPROJECT#Release#Release 001#get_dim_PurchaseOrderShipp_key#
+_WS&OBJGROUPPROJECT#Release#Release 001#get_dimDimVendorList_key#
+_WS&OBJGROUPPROJECT#Release#Release 001#get_DimProduct_key#
+_WS&OBJGROUPPROJECT#Release#Release 001#get_DimShippingMethod_key#
+_WS&OBJGROUPPROJECT#Release#Release 001#get_DimVendorList_key#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_dim_DimVendorList#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_dim_PurchaseOrderShipp#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_DimProduct#
+_WS&OBJGROUPPROJECT#Release#Release 001#update_DimShippingMethod#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_PurchaseOrderShippedBy#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_PurchaseOrderShipp_idx_0#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_PurchaseOrderShipp_idx_A#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimProduct#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimProduct_idx_0#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimProduct_idx_A#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#custom_stage_date01#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimShippingMethod#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimShippingMethod_idx_0#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimShippingMethod_idx_A#
+_WS&OBJGROUPPROJECT#Release#Release 001#DimVendorList#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_DimVendorList_idx_0#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_DimVendorList_idx_A#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_duedate#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_Orderdate#
+_WS&OBJGROUPPROJECT#Release#Release 001#dim_shippingdate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesOrderDetail#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesOrderHeader#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesOrderHeaderSalesReason#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesPerson#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesPersonQuotaHistory#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesReason#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesTaxRate#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesTerritory#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SalesTerritoryHistory#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_ShoppingCartItem#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SpecialOffer#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_SpecialOfferProduct#
+_WS&OBJGROUPPROJECT#01 Source#Adventure Works#load_Store#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#SampleSSASjson#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#wsl_tabular_data_model_ddl#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#wsl_tabular_data_model_ddl_powershell#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#stage_date#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#update_stage_date#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#update_stage_date1#
+_WS&OBJGROUPPROJECT#20 Projects#SSAS Template#dim_date_cr#
+_WS&OBJGROUPPROJECT#20 Projects#Peer Review#update_StandardsTest009PoorPe#
+_WS&PARAMETERGROUPPROJECT#20 Projects#Peer Review#TechnologyLead#
