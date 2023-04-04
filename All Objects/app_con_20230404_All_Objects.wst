@@ -1,0 +1,12 @@
+30;OAdventureWorks
+31;DAzureTarget
+32;WAzureTargetWindows
+1;DDataWarehouse
+29;WGIT
+33;MSSAS
+34;DTest
+35;OTraders
+2;DTutorial (OLTP)
+3;WWindows
+_WS&TARGET_SSAS_TDM;1;31;13;;TDM;;;TGTCOLOR=000032786;
+_WS&TARGET_TabularDataModel;2;33;12;TabularDataModel;;;;TGTCOLOR=016734207;
