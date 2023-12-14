@@ -1,0 +1,19 @@
+{# -- TemplateVersion:002 MinVersion:8010 MaxVersion:* TargetType:AzureDW Objects:*                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --    ? Wherescape Inc 2020. Wherescape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template          -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DW                                                                                                                     -- #}
+{# -- Template Name      : wsl_azdw_drop_index                                                                                                              -- #}
+{# -- Template Version   : 8.4.2.0                                                                                                                          -- #}
+{# -- Description        : This template drops a Azure SQL DW index                                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+
+{%- fetch index.table -%}
+DROP INDEX {{index.name}} ON {{index.table.database}}.{{index.table.schema}}.{{index.table.name}}

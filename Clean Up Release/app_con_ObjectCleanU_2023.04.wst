@@ -1,0 +1,12 @@
+75;DAPI
+1;DDataWarehouse
+1081;ODWSource01
+28;OSales
+1082;WSource_File
+1083;MTabular Model
+1084;OTraders_South
+2;DTutorial (OLTP)
+3;WWindows
+_WS&TARGET_dbo;1;1;2;demo_20220817;dbo;;;TGTCOLOR=000000000;
+_WS&TARGET_API;2;75;13;;;;;TGTCOLOR=000000000;
+_WS&TARGET_Data Warehouse Standards;3;1083;12;Data Warehouse Standards;;;;TGTCOLOR=008421376;

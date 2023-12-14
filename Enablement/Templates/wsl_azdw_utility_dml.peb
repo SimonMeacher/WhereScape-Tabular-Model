@@ -1,0 +1,468 @@
+{# -- TemplateVersion:002 MinVersion:8010 MaxVersion:* TargetType:AzureDW Objects:STAR,NORMAL,ODS TemplateType:Utility                                      -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DataWarehouse                                                                                                          -- #}
+{# -- Template Name      : wsl_azdw_utility_dml                                                                                                             -- #}
+{# -- RED Version        : 8.0.1.0                                                                                                                          -- #}
+{# -- Description        : Generic macros that can be used to define specific templates for Azure SQL DataWarehouse                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# -- TK: Azure SQL Datawarehouse Release 1.0.0 (2017-06-06)                                                                                                -- #}
+{# -- PM: JIRA#WTD-13 Added Support for Type 2 Date Range Dimension  (2020-06-05)                                                                           -- #}
+{# -- PM: JIRA#WTD-22 Fixed qualification of dss_version column in macro addSetInsertDestScdExistingColumns() 										                          -- #}
+{# -- PM: JIRA#WTD-89 Added check for fk.fromTable.name and date tracking column to conditionally qualify the column name 		                              -- #}
+
+
+{# -- This macro adds the source columns and dss columns -- #}
+{% macro addSetInsertColumnsAzureDW(addArtificialKey = false, alias = "", ignoreDssColumns = false, addColumnName = true, keepCreateDate = false, ignoreDssVersion = false, firstChangingVersion = true ) %}
+{%- set colCounter = 0 %}
+
+    {%- for column in table.columns %}
+    {%- if column.transform | trim != "" %}
+      {%- if colCounter > 0 %}{%br%}
+         , {%- endif %}{{column.transform | trim }}{%- if addColumnName %} AS [{{column.name}}] {%- endif %}
+      {%- set colCounter = 1 %}
+    {%- elseif column.artificial %}
+      {%- if colCounter > 0 %}{%br%}
+         , {%- endif %}
+      {%- if addArtificialKey == true %}
+        {{- addAzureDWArtificialKey()}} {%- set colCounter = 1 %}
+    {%- endif %}
+    {%- elseif column.currentFlag %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+         , {%- endif %} 'Y' AS [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.dssStartDate %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+         , {%- endif %} {% if firstChangingVersion %}{{settings.changeDetectionStartInitial}}{% else %}{{settings.changeDetectionStartNew}}{% endif %} AS [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.dssEndDate %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+         , {%- endif %} {{settings.changeDetectionEndCurrent}} AS [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.dssVersion%}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+         , {%- endif %} {% if firstChangingVersion %}1{% else %}{{table.name}}.[{{ column.name }}] + 1{% endif %} AS [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.updateTime or column.createTime %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+         , {%- endif %} {%- if column.createTime and keepCreateDate %} [{{ column.name }}] {%- else %} CAST(GETDATE() AS DATETIME) {%- endif%} {%- if addColumnName %} AS [{{ column.name }}] {%- endif %}
+    {%- endif %}
+    {%- else %}
+       {%- if colCounter > 0 %}{%br%}
+         , {%- endif %}{{getColumnSource(alias = alias)}}{%- if addColumnName %} AS [{{ column.name }}] {%- endif %}
+    {%- set colCounter = 1 %}
+    {%- endif %}
+  {%- endfor %}{%br%}
+{% endmacro %}
+
+{# --This macro adds the distinct keyword if configured -- #}
+{% macro distinct() %}
+{%- if table.sourceJoinDetails.distinct %}DISTINCT {% endif %}
+{% endmacro %}
+
+{# -- This macro substitutes the source transformation -- #}
+{# -- otherwise it adds the full name of the source column -- #}
+{% macro getColumnSource(column = column, alias = "") %}
+{%- if alias != "" %} {{alias}}.[{{ column.name }}]
+{%- elseif column.transform != "" %} {{- column.transform}}
+{%- else %}{%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{- checkDimensionKeyColumn(columnName =  column.sourceTable.name+".["+column.sourceColumn.name+"]")}} {%- endif %}
+{% endmacro %}
+
+{# -- This macro adds a COALESCE statement if the column is a dimension key,otherwise it adds the full name of the source column -- #}
+{% macro checkDimensionKeyColumn(columnName) %}
+{%- set fullName=columnName %}
+{%- for relation in table.relations %}
+  {%- for fk in relation.fks %}
+  {%- fetch fk.fromTable %}
+  {%- fetch fk.toTable %}
+  {%- from fk.toTable.columns as column where column.artificial %}
+  {%- if fk.toTable.name+"."+column.name == columnName %} {%- set fullName = "COALESCE("+[columnName]+", 0)" %}
+  {%- endif %}
+  {%- endfrom %}
+  {%- endfor %}
+{%- endfor %} {{fullName}}
+{% endmacro %}
+
+{# -- This macro returns the artificial key column name -- #}
+{% macro getArtificialKey() %}
+{%- for column in table.columns %}
+{%- if column.artificial %}[{{ column.name }}] {%- endif %}
+{%- endfor %}
+{% endmacro %}
+
+{# -- This macro returns the first business key column name -- #}
+{% macro getBusinessKeyCol1Name() %}
+{%- from table.columns as column where column.businessKey %}
+{%- if loop.first %}[{{ column.name }}]{%- endif %}
+{%- endfrom %}
+{% endmacro %}
+
+{# -- This macro inserts the default values for the Zero key insert -- #}
+{% macro defaultColumnsAzureDW() %}
+{% for column in table.columns %}
+  {%- if not loop.first %}       , {% else %}         {% endif %}
+  {%- if column.artificial %}0{%br%}
+  {%- elseif column.sourceSystem or column.dssVersion %}1{%br%}
+  {%- elseif column.currentFlag %}'Y'{%br%}
+  {%- elseif column.updateTime or column.createTime %}CAST(GETDATE() AS DATETIME){%br%}
+  {%- elseif column.dssStartDate %}{{settings.changeDetectionStartInitial}}{%br%}
+  {%- elseif column.dssEndDate %}{{settings.changeDetectionEndCurrent}}{%br%}
+  {%- elseif column.zeroKeyValue != "" %}
+    {%- if column.dataType == "char" or column.dataType == "varchar" or column.dataType == "nvarchar" %}SUBSTRING('{{column.zeroKeyValue}}',1,{{column.dataTypeSize}}){%br%}
+    {%- else %}{{column.zeroKeyValue}}{%br%}
+    {%- endif %}
+  {%- else %}CAST(NULL  AS {{column.fullDataType}}){%br%}
+  {%- endif %}
+  {%- if not loop.last %}
+  {%- endif %}
+{% endfor %}
+{% endmacro %}
+
+{# -- This macro adds the joins to the dimensions -- #}
+{% macro addDimensionJoins(indent = "") %}
+{%- for relation in table.relations %}
+  {%- for fk in relation.fks %}
+  {%- fetch fk.fromTable %}
+  {%- fetch fk.toTable %}
+  {%- if loop.index == 0 %}{{- indent }}LEFT OUTER JOIN [TABLEOWNER].[{{fk.toTable.name}}] {{fk.toTable.name}}{%br%}{%- endif %}
+  {{- indent }}{%- if loop.index == 0 %}ON {%- else %}AND
+  {%- endif %} {{fk.fromTable.name}}.{{fk.fromColumn.name}} = {{fk.toTable.name}}.{{fk.toColumn.name}}{%br%}
+  {%- if loop.last %}
+    {%- if relation.currentFlag and relation.trackingDateColumn == null %}{{addWhereCurrentFlag(fk.toTable, firstInClause = false, nullIndicator = false)}}{%br%}
+    {%- elseif relation.useDateColForTrackingChangingDimTable and relation.trackingDateColumn != null %}{{- indent }}AND
+		{%- if (relation.trackingDateColumn.name).indexOf(".") == -1 %} {{relation.trackingDateColumn.source}} {% else %} {{relation.trackingDateColumn.name}} {% endif %} BETWEEN {#- no line break #}
+               {#- no indent #} {{fk.toTable.name}}.{{getStartEndColumn(fk.toTable, 1)}} AND {{fk.toTable.name}}.{{getStartEndColumn(fk.toTable, 0)}}{%br%}
+    {%- endif %}
+  {%- endif %}
+  {%- endfor %}
+{%- endfor %}
+{% endmacro %}
+
+{# -- This macro adds the start/end column  (used in macro addDimensionJoins) -- #}
+{% macro getStartEndColumn(relationTable, startIndicator) %}
+ {%- set rangeStart = "" %}
+ {%- set rangeEnd = "" %}
+ {%- set dssStart = "" %}
+ {%- set dssEnd = "" %}
+ {%- for column in relationTable.columns %}
+    {%- if column.dssStartDate and startIndicator == 1 %} {%- set dssStart = column.name %}
+    {%- elseif column.dssEndDate and startIndicator == 0 %} {%- set dssEnd = column.name %}
+    {%- elseif column.rangeStart %} {%- set rangeStart = column.name %}
+    {%- elseif column.rangeEnd %} {%- set rangeEnd = column.name %}
+    {%- endif %}
+{%- endfor %}
+{%- if startIndicator == 1 %}
+{%- if rangeStart != "" %}{{rangeStart}} {%- else %}{{dssStart}} {%- endif %}
+{%- elseif startIndicator == 0 %}
+{%- if rangeStart != "" %}{{rangeEnd}} {%- else %}{{dssEnd}} {%- endif %}
+{%- endif %}
+{% endmacro %}
+
+{#-- This macro adds the where-clause for the current flag to the statement -- #}
+{% macro addWhereCurrentFlag(joinTable = table, firstInClause, nullIndicator) %}
+{#- Filter on current only #}
+{%- for column in joinTable.columns %}
+{%- if column.currentFlag %}
+    {%- if firstInClause == true %}
+  WHERE
+{% set firstInClause = false %}
+{%- else %}
+  AND {% endif %} {{joinTable.name}}.[{{ column.name }}] = 'Y'
+{%- if nullIndicator == true %}OR    {{joinTable.name}}.[{{ column.name }}] is NULL{%br%}{%- endif %}
+{%- endif %}
+{%- endfor %}
+{% endmacro %}
+
+{% macro addUpdateCol(alias = "src", column = column, colCounter = colCounter) %}
+
+{% endmacro %}
+
+{% macro addUpdateSet(alias = "src") %}
+{%- set colCounter = 0 %}
+SET
+{%- from table.columns as column where (column.updateTime or not column.dss) and not ( column.artificial or column.businessKey  or column.rangeStart) %}
+  {%- if colCounter == 0 -%}
+    {% set colCounter = 1 %}
+  {%- else -%}
+      {%br%}    ,
+  {%- endif %} [{{ column.name }}] = {{alias}}.[{{ column.name }}]
+{% endfrom %}{%br%}
+{% endmacro %}
+
+{# -- This macro adds an update set -- #}
+{% macro addUpdateSetScdExisting(alias = "src") %}
+{%- set colCounter = 0 %}
+SET
+{%- from table.columns as column where (column.updateTime or not column.dss) and not ( column.artificial or column.businessKey ) %}
+  {%- if colCounter == 0 -%}
+    {% set colCounter = 1 %}
+  {%- else -%}
+      {%br%}    ,
+  {%- endif %} [{{ column.name }}] = {{alias}}.[{{ column.name }}]
+{% endfrom %}
+{% endmacro %}
+
+{# -- This macro adds an update set -- #}
+{% macro addUpdateSetScdExpiring(alias = "src") %}
+{%- set colCounter = 0 %}
+SET
+{%- from table.columns as column where (column.updateTime or column.dssEndDate or column.currentFlag or not column.dss) and not ( column.artificial or column.businessKey or column.rangeStart ) %}
+  {%- if colCounter == 0 -%}
+    {% set colCounter = 1 %}
+  {%- else -%}
+      {%br%}    ,
+  {%- endif %} [{{ column.name }}] = {{alias}}.[{{ column.name }}]
+{% endfrom %}{%br%}
+{% endmacro %}
+
+{# -- This macro inserts the join back to the target -- #}
+{% macro addJoinToTarget(indent="    ", joinType = "LEFT OUTER") %}
+{{ joinType }} JOIN [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.businessKey %}
+  {%- if loop.first %}{{indent}}ON {%- else %}{{indent}}AND {%- endif %} {%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] = {{table.name}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+ {%- if table.subType == "R" -%}
+    {%- from table.columns as rangeS where rangeS.rangeStart %}{% fetch rangeS.sourceColumn %}  AND {{rangeS.source}} = {{table.name}}.{{rangeS.sourceColumn.name}}{% br %}{% endfrom %}
+  {%- endif %}
+{% endmacro %}
+
+{# -- This macro inserts the join to an aliased source -- #}
+{% macro addJoinToAliasedSource(alias = "src") %}
+{%- from table.columns as column where column.businessKey %}
+  {%- if loop.first %}WHERE {%- else %}  AND {%- endif %} {{table.name}}.[{{ column.name }}] = {{alias}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+ {%- if table.subType == "R" -%}
+    {%- from table.columns as rangeS where rangeS.rangeStart %}{% fetch rangeS.sourceColumn %}  AND {{table.name}}.{{rangeS.name}} = {{alias}}.{{rangeS.sourceColumn.name}}{% br %}{% endfrom %}
+  {%- endif %}
+{%- from table.columns as column where column.dssVersion %}
+  AND   {{table.name}}.[{{ column.name }}] = {{alias}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{% endmacro %}
+
+{# -- This macro inserts the join to a source table-- #}
+{% macro addJoinToUpdate() %}
+{%- from table.columns as column where column.businessKey %}
+  {%- if loop.first %}WHERE {%- else %}  AND {%- endif %} {{table.name}}.[{{ column.name }}] = {{column.source}}{%br%}
+{%- endfrom %}
+{% endmacro %}
+
+# -- This macro inserts the artificial key insert statement -- #}
+{% macro addAzureDWArtificialKey(alias = table.name) %}
+ROW_NUMBER() OVER(ORDER BY {{alias}}.{{getBusinessKeyCol1Name()}}) + ISNULL(maxkey.maxkey,0) AS {{getArtificialKey()}}{# no line break #}
+{% endmacro %}
+
+{# -- This macro inserts the current flag where or set -- #}
+{% macro addCurrentFlagStmt(stmtType = "WHERE", currentFlagValue = "N") %}
+{%- from table.columns as column where column.currentFlag %}
+{{stmtType}} {% if stmtType != "SET" %}{{table.name}}.{%- endif %}[{{ column.name }}] {% if currentFlagValue == "IS NULL" %}{{currentFlagValue}}{% else %}= '{{currentFlagValue}}'{%- endif %}{# no line break #}
+{%- endfrom %}
+{% endmacro %}
+
+{# -- This macro inserts the cross join for getting the last surrogate key -- #}
+{% macro addLastSurrogateCrossJoin(alias = "maxkey") %}
+{%- from table.columns as column where column.artificial %}
+  CROSS JOIN (SELECT MAX({{getArtificialKey()}}) AS {{alias}}{%br%}
+              FROM [TABLEOWNER].[{{table.name}}]) AS {{alias}}
+{%- endfrom %}
+{% endmacro %}
+
+{# -- This macro adds the source columns and dss columns of the destination table in an end dating update-- #}
+{% macro addSetInsertDestScdEndingColumns() %}
+{%- set colCounter = 0 %}
+  {%- from table.columns as column where (column.updateTime or column.dssEndDate or column.currentFlag or column.dssVersion or not column.dss) and not column.artificial %}
+    {%- if column.transform | trim != "" %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} {% for transLine in column.transform | trim | lines %}{% if not loop.first %}          {% endif %}{{transLine}}{%br%}{%endfor%} AS [{{ column.name }}]
+    {%- elseif column.currentFlag %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} 'P' AS [{{ column.name }}]
+    {%- elseif column.dssEndDate %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} {{settings.changeDetectionEndExpiring}} AS [{{ column.name }}]
+    {%- elseif column.updateTime %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} CAST(GETDATE() AS DATETIME)AS [{{ column.name }}]
+    {%- else %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{% endif %} {{table.name}}.[{{ column.name }}] AS [{{ column.name }}]
+      {%- set colCounter = 1 %}
+    {%- endif %}
+  {%- endfrom %}{%br%}
+{% endmacro %}
+
+# -- This macro adds the source columns and dss columns of the destination table in an existing update-- #}
+{% macro addSetInsertDestScdExistingColumns() %}
+{%- set colCounter = 0 %}
+  {%- from table.columns as column where (column.updateTime or column.dssVersion or not column.dss) and not column.artificial %}
+    {%- if column.transform | trim != "" %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} {% for transLine in column.transform | trim | lines %}{% if not loop.first %}          {% endif %}{{transLine}}{%br%}{%endfor%} AS [{{ column.name }}]
+    {%- elseif column.updateTime %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} CAST(GETDATE() AS DATETIME) AS [{{ column.name }}]
+      {%- set colCounter = 1 %}
+    {%- elseif column.dssVersion %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} {{table.name}}.[{{ column.name }}] AS [{{ column.name }}]
+      {%- set colCounter = 1 %}
+    {%- else %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{% endif %} {{column.source}} AS [{{ column.name }}]
+      {%- set colCounter = 1 %}
+    {%- endif %}
+  {%- endfrom %}{%br%}
+{% endmacro %}
+
+# -- This macro adds the source columns and dss columns of the destination table in an existing update-- #}
+{% macro addSetInsertDestColumns() %}
+{%- set colCounter = 0 %}
+  {%- from table.columns as column where (column.updateTime or not column.dss) and not column.artificial %}
+    {%- if column.transform | trim != "" %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} {% for transLine in column.transform | trim | lines %}{% if not loop.first %}          {% endif %}{{transLine}}{%br%}{%endfor%}  AS [{{ column.name }}]
+    {%- elseif column.updateTime %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{%- endif %} CAST(GETDATE() AS DATETIME) AS [{{ column.name }}]
+      {%- set colCounter = 1 %}
+    {%- else %}
+      {%- if colCounter > 0 %}{%br%}
+         ,{% endif %}{%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS [{{ column.name }}]
+      {%- set colCounter = 1 %}
+    {%- endif %}
+  {%- endfrom %}{%br%}
+{% endmacro %}
+
+{# -- This macro adds the part of the where clause for detecting slowly changing changes-- #}
+{% macro addSlowlyChangingWhere() %}
+    {%- if settings.nullSupport %}
+      {%- from table.columns as column where column.slowlyChanging %}
+        {%- if loop.first %}    AND  ({%- else %}    OR    {% endif %} ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}]  AS VARCHAR(4000)),'~') <> ISNULL(CAST({{table.name}}.[{{ column.name }}] AS VARCHAR(4000)),'~'){%br%}
+        {%- if loop.last %}    ){%br%}{%- endif %}
+      {%- endfrom %}
+    {%- else %}
+      {%- from table.columns as column where column.slowlyChanging %}
+        {%- if loop.first %}    AND  ({%- else %}    OR    {% endif %} CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}]  AS VARCHAR(4000)) <> CAST({{table.name}}.[{{ column.name }}] AS VARCHAR(4000)){%br%}
+        {%- if loop.last %}    ){%br%}{%- endif %}
+      {%- endfrom %}
+    {%- endif %}
+{% endmacro %}
+
+{# -- This macro adds the part of the where clause for detecting untracked changes-- #}
+{% macro addChangedRecordWhere( stmtType = "AND" ) %}
+  {%- from table.columns as column where not ( column.slowlyChanging or column.businessKey or column.dss or column.artificial or column.rangeStart) %}
+    {%- if loop.first %}  {{ stmtType }}  ({%- else %}  OR    {% endif %} ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}]  AS VARCHAR(4000)),'~') <> ISNULL(CAST({{table.name}}.[{{ column.name }}] AS VARCHAR(4000)),'~'){%br%}
+    {%- if loop.last %}  ){%br%}{%- endif %}
+  {%- endfrom %}
+{% endmacro %}
+
+{# -- This macro adds the target columns and dss columns of the destination table-- #}
+{% macro addSetInsertTargetColumns() %}
+  {%- for column in table.columns %}
+    {%- set sTargetColumn = column.name -%}
+    {%- if loop.first %}
+  ( [{{ sTargetColumn }}]{% br %}
+    {%- else %}
+  , [{{ sTargetColumn }}]{% br %}
+    {%- endif -%}
+  {%- endfor %}
+{% endmacro %}
+
+{# -- This macro adds the aliased source columns for a destination table -- #}
+{% macro addSetInsertAliasedSourceColumns(alias = "src") %}
+  {%- for column in table.columns %}
+    {%- if column.artificial %}
+      {%- if loop.first %}
+        {{- addAzureDWArtificialKey(alias = "src")}}{%br%}
+      {%- else %}
+     , {{addAzureDWArtificialKey(alias = "src")}}{%br%}
+      {%- endif %}
+    {%- else %}
+      {%- if loop.first %}
+        {{- alias }}.[{{ column.name }}]{%br%}
+      {%- else %}
+     , {{alias }}.[{{ column.name }}]{%br%}
+      {%- endif %}
+    {%- endif %}
+  {% endfor %}
+{% endmacro %}
+
+{# -- This macro adds the source columns and dss columns -- #}
+{% macro addSetInsertColumns(addArtificialKey = false, alias = "", ignoreDssColumns = false, addColumnName = false, keepCreateDate = false) %}
+{%- set colCounter = 0 %}
+    {%- for column in table.columns %}
+    {%- if column.artificial %}
+      {%- if colCounter > 0 %}{%br%}
+      ,{%- endif %}
+      {%- if addArtificialKey == true %}
+        {{- addAzureDWArtificialKey(alias = alias)}} {%- set colCounter = 1 %}
+    {%- endif %}
+    {%- elseif column.currentFlag %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+      , {%- endif %} 'Y'
+    {%- endif %}
+    {%- elseif column.dssStartDate %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+      , {%- endif %} {{settings.changeDetectionStartNew}} [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.dssEndDate %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+      , {%- endif %} {{settings.changeDetectionEndExpiring}} [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.dssVersion %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+      , {%- endif %} 1 [{{ column.name }}]
+    {%- endif %}
+    {%- elseif column.updateTime or column.createTime %}
+      {%- if not ignoreDssColumns %}
+        {%- if colCounter > 0 %}{%br%}
+      , {%- endif %} {%- if column.createTime and keepCreateDate %} [{{ column.name }}] {%- else %} CAST(GETDATE() AS DATETIME) {%- endif%} {%- if addColumnName %} [{{ column.name }}] {%- endif %}
+    {%- endif %}
+    {%- set colCounter = 1 %}
+    {%- else %}
+       {%- if colCounter > 0 %}{%br%}
+      ,{%- endif %}{{getColumnSource(alias = alias)}} {%- if addColumnName %} [{{ column.name }}] {%- endif %}
+    {%- set colCounter = 1 %}
+    {%- endif %}
+  {%- endfor %}{%br%}
+{% endmacro %}
+
+{# -- This macro adds the source columns and dss columns for a set merge -- #}
+{% macro addSetInsertColumnsAzureDWMerge(cleanSourceTable = "" , indent = "       ") %}
+  {%- for column in table.columns %}
+    {%- if not loop.first %}{{indent}}, {% else %}{% endif %}
+    {%- if column.transform | trim != "" %}
+      {%- for transLine in (column.transform | trim | lines)%}
+        {%- set cleanTransLine=transLine -%}
+        {%- for unclean in settings.sourceTablesByName %}
+          {%- set cleanTransLine=cleanTransLine.replace(unclean.key+".",cleanSourceTable+".") -%}
+        {%- endfor%}
+        {%- if not loop.first %}          {% endif %}{{cleanTransLine}}{%- if not loop.last %}{%br%}{% endif %}
+      {%- endfor%}
+    {%- elseif column.updateTime or column.createTime -%}
+      CAST(GETDATE() AS DATETIME)
+    {%- else -%}
+      {%- set cleanColumnSource=column.source -%}
+      {%- for unclean in settings.sourceTablesByName %}
+        {%- set cleanColumnSource=cleanColumnSource.replace(unclean.key+".",cleanSourceTable+".") -%}
+      {%- endfor%}
+      {{- cleanColumnSource}}
+    {%- endif %} AS [{{ column.name }}]{%br%}
+  {%- endfor %}
+{% endmacro %}

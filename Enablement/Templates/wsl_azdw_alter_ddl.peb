@@ -1,0 +1,79 @@
+{# -- TemplateVersion:001 MinVersion:8210 MaxVersion:* TargetType:AzureDW ModelType:* TemplateType:Alter                                                    -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DW                                                                                                                     -- #}
+{# -- Template Name      : wsl_azdw_alter_ddl                                                                                                               -- #}
+{# -- RED Version        : 8.2.1.0                                                                                                                          -- #}
+{# -- Description        : This template is used in conjuction with the table_information SQL Block to generate alter statements                            -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{%- import "wsl_azdw_create_table" -%}
+{% macro recreate() %}
+  {% set newTable = table.schema + "." + table.name + "_WSLNEW" %}
+  IF OBJECT_ID ('{{newTable}}', 'U') IS NOT NULL
+    DROP TABLE {{newTable}}{{options.endOfStatement}}{% br -%}
+  {{- createTable( table = table, tableName = newTable )}}{%- br -%}
+  INSERT INTO {{newTable}} ({% br -%}
+  {%- from actualTable.columns as col where table.columnsByName[col.name] is defined -%}
+    {%- if loop.first %}  {% else %}, {% endif %}[{{col.name}}]{% br -%}
+  {%- endfrom -%}
+  ){% br -%}
+  SELECT{% br -%}
+  {%- from actualTable.columns as col where table.columnsByName[col.name] is defined -%}
+    {% if loop.first %}  {% else %}, {% endif %}CAST([{{col.name}}] AS {{table.columnsByName[col.name].fullDataType}}){% br -%}
+  {%- endfrom -%}
+  FROM {{table.schema}}.{{table.name}}{{ options.endofStatement }}{% br -%}
+  DROP TABLE {{table.schema}}.{{table.name}}{{options.endOfStatement}}{% br -%}
+  ALTER TABLE {{newTable}} RENAME TO {{table.schema}}.{{table.name}}{{- options.endOfStatement}}{%br%}
+{% endmacro %}
+
+{%- for change in changes %}
+  {%- if change.changeType == Types.ChangeType.TableCreation -%}
+    {{- createTable( table = table, tableName = table.schema + "." + table.name )}}
+  {%- elseif change.changeType == Types.ChangeType.TableAdditionalInformationChange -%}
+    {%- error "Unhandled change type: " + change.data.changedKey -%}
+  {%- elseif change.changeType == Types.ChangeType.ColumnOrderChange -%}
+    {# {{- recreate() }} Disabled as RED currently ignores this change type #}
+  {%- elseif change.changeType == Types.ChangeType.ColumnAddition -%}
+	 {%- for col in table.columns %}
+     {%- if    col.name | upper == change.data.columnName | upper and col.nullAllowed == false-%}
+     {%- if col.defaultValue == "" or col.defaultValue == 0-%}
+     {%- error "Set default value to add new column with constraint NOT NULL" -%}
+     {%- endif -%}
+      ALTER TABLE {{table.schema}}.{{table.name}} ADD [{{change.data.columnName}}] {{table.columnsByName[change.data.columnName].fullDataType}}  NOT NULL DEFAULT {{col.defaultValue}} {{- options.endOfStatement}}{%br%}
+      {%- elseif    col.name | upper == change.data.columnName | upper -%}
+      {%- if col.defaultValue == "" -%}
+      ALTER TABLE {{table.schema}}.{{table.name}} ADD [{{change.data.columnName}}] {{table.columnsByName[change.data.columnName].fullDataType}} {{- options.endOfStatement}}{%br%}
+      {%- else -%}
+      ALTER TABLE {{table.schema}}.{{table.name}} ADD [{{change.data.columnName}}] {{table.columnsByName[change.data.columnName].fullDataType}} DEFAULT {{col.defaultValue}} {{- options.endOfStatement}}{%br%}{% endif %}{% endif %}
+   {%- endfor %}
+  {%- elseif change.changeType == Types.ChangeType.ColumnDeletion -%}
+    ALTER TABLE {{table.schema}}.{{table.name}} DROP COLUMN [{{change.data.columnName}}]{{- options.endOfStatement}}{%br%}
+  {%- elseif change.changeType == Types.ChangeType.ColumnNameChange -%}
+    ALTER TABLE {{table.schema}}.{{table.name}} ADD [{{change.data.columnName}}] {{table.columnsByName[change.data.columnName].fullDataType}}{{- options.endOfStatement}}{% br -%}
+    UPDATE {{table.schema}}.{{table.name}} SET [{{change.data.columnName}}] = [{{change.data.actualColumnName}}]{{- options.endOfStatement}}{% br -%}
+    ALTER TABLE {{table.schema}}.{{table.name}} DROP COLUMN [{{change.data.actualColumnName}}]{{- options.endOfStatement}}{% br -%}
+  {%- elseif change.changeType == Types.ChangeType.ColumnDataTypeChange -%}
+    ALTER TABLE {{table.schema}}.{{table.name}} ALTER COLUMN [{{change.data.columnName}}] {{change.data.dataType}}{{- options.endOfStatement}}{%br%}
+  {%- elseif change.changeType == Types.ChangeType.ColumnAdditionalInformationChange -%}
+    {%- if change.data.changedKey | upper == "NULLABLE" -%}
+      {%- if change.data.expectedValue == "YES" -%}
+        ALTER TABLE {{table.schema}}.{{table.name}} ALTER COLUMN [{{change.data.columnName}}] {{table.columnsByName[change.data.columnName].fullDataType}} NULL{{- options.endOfStatement}}{%br%}
+      {%- else -%}
+        ALTER TABLE {{table.schema}}.{{table.name}} ALTER COLUMN [{{change.data.columnName}} ]{{table.columnsByName[change.data.columnName].fullDataType}} NOT NULL{{- options.endOfStatement}}{%br%}
+      {%- endif -%}
+    {%- else %}
+      {%- error "Unhandled change type: " + change.data.changedKey -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- error "Unhandled change type: " + change.changeType.name -%}
+  {%- endif -%}
+{%- endfor %}

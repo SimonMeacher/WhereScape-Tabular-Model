@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data_type_mapping_set name="Azure SQL DW from SQL Server" xsi:schemaLocation="http://www.wherescape.com/xml/red ./Data%20Type%20Mapping.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.wherescape.com/xml/red">
+	<mapping_set_description></mapping_set_description>
+	<mapping_set_null_policy>AllowNulls</mapping_set_null_policy>
+	<data_type_mapping match_data_type="int" output_data_type="integer"></data_type_mapping>
+	<data_type_mapping match_data_type="smallint" output_data_type="smallint"></data_type_mapping>
+	<data_type_mapping match_data_type="bigint" output_data_type="bigint"></data_type_mapping>
+	<data_type_mapping match_data_type="datetime" output_data_type="datetime">
+		<transform_code>CONVERT(VARCHAR,%column_name,120)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="datetime2" output_data_type="datetime2">
+		<transform_code>CONVERT(VARCHAR,%column_name,120)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="money" output_data_type="money"></data_type_mapping>
+	<data_type_mapping match_data_type="real" output_data_type="real"></data_type_mapping>
+	<data_type_mapping match_data_type="bit" output_data_type="varchar(20)"></data_type_mapping>
+	<data_type_mapping match_data_type="ntext" output_data_type="nvarchar(4000)">
+		<transform_code>SUBSTRING(CAST(%column_name AS NVARCHAR(MAX)),1,4000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="text" output_data_type="varchar(8000)">
+		<transform_code>SUBSTRING(CAST(%column_name AS VARCHAR(MAX)),1,8000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="geometry" output_data_type="varbinary(8000)">
+		<transform_code>CAST(%column_name AS VARBINARY(8000))</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="geography" output_data_type="varbinary(8000)">
+		<transform_code>CAST(%column_name AS VARBINARY(8000))</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="image" output_data_type="varbinary(8000)">
+		<transform_code>CAST(%column_name AS VARBINARY(8000))</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="xml" output_data_type="varchar(8000)">
+		<transform_code>CAST(%column_name AS VARCHAR(8000))</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="timestamp" output_data_type="varchar(255)">
+		<transform_code>CAST(%column_name AS VARCHAR(255))</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="date" output_data_type="date">
+		<transform_code>CONVERT(VARCHAR,%column_name,120)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="varchar" output_data_type="varchar(8000)">
+		<match_parameters>
+			<match_precision>8001-*</match_precision>
+		</match_parameters>
+		<transform_code>SUBSTRING(%column_name,1,8000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="nvarchar" output_data_type="nvarchar(4000)">
+		<match_parameters>
+			<match_precision>4001-*</match_precision>
+		</match_parameters>
+		<transform_code>SUBSTRING(%column_name,1,4000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="char" output_data_type="char(8000)">
+		<match_parameters>
+			<match_precision>8001-*</match_precision>
+		</match_parameters>
+		<transform_code>SUBSTRING(%column_name,1,8000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="nchar" output_data_type="nchar(4000)">
+		<match_parameters>
+			<match_precision>4001-*</match_precision>
+		</match_parameters>
+		<transform_code>SUBSTRING(%column_name,1,4000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="time" output_data_type="">
+		<transform_code>CONVERT(VARCHAR,%column_name)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="tinyint" output_data_type="tinyint"></data_type_mapping>
+	<data_type_mapping match_data_type="smalldatetime" output_data_type="smalldatetime">
+		<transform_code>CONVERT(VARCHAR,%column_name,120)</transform_code>
+	</data_type_mapping>
+</data_type_mapping_set>

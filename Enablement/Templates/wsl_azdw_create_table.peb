@@ -1,0 +1,37 @@
+{# -- TemplateVersion:002 MinVersion:8210 MaxVersion:* TargetType:AzureDW Objects:* TemplateType:DDL                                                        -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DW                                                                                                                     -- #}
+{# -- Template Name      : wsl_azdw_create_table                                                                                                            -- #}
+{# -- Template Version   : 8.2.1.0                                                                                                                          -- #}
+{# -- Description        : This template creates a Azure SQL DW database table                                                                              -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# -- TK: Azure SQL DW Release 1.0.0 (2017-08-03)                                                                                                           -- #}
+{# -- TK: Refactored to support alter ddl template (2018-08-23)                                                                                             -- #}
+{# --                                                                                                                                                       -- #}
+{%- macro createTable( table, tableName ) -%}
+{%- fetch table.target %}
+CREATE TABLE {{tableName}} ({% br %}
+  {%- for column in table.columns %}
+  {%- if loop.first %}  {% endif -%}
+  {%- if not loop.first %} ,{% endif %} [{{column.name}}] {% if column.fullDataType|lower == "varchar" %} varchar(max){% else %}{{column.fullDataType}}{% endif %}
+      {%- if not column.nullAllowed %} NOT{%- endif %} NULL
+    {%- br -%}
+  {% endfor %}
+){% br %}
+WITH ({% br %}
+  {% if table.storage.optionalCreateClause != "" %}{{table.storage.optionalCreateClause}}
+  {%- else %}DISTRIBUTION = ROUND_ROBIN{% endif %}{% br %}
+){% br %}
+{{options.endOfStatement}}
+{%- endmacro -%}
+
+{{- createTable ( table = table, tableName = "$OBJECT$" ) -}}

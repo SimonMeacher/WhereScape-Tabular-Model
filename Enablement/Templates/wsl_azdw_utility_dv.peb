@@ -1,0 +1,312 @@
+{# -- TemplateVersion:002 MinVersion:8010 MaxVersion:* TargetType:AzureDW Objects:DATAVAULT TemplateType:Utility                                            -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DW                                                                                                                     -- #}
+{# -- Template Name      : wsl_azdw_utility_dv                                                                                                              -- #}
+{# -- Template Version   : 8.0.1.0                                                                                                                          -- #}
+{# -- Description        : Generic macros that can be used to define specific templates for Azure SQL DW data vaults                                        -- #)
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# -- TK: Azure SQL DW Release 1.0.0 (2017-08-03)                                                                                                           -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- This macro adds hub hash key calculations                                   -- #}
+{% macro addHubHashKey(hashColumn, indentStr = "               ") %}
+{#=====================================================================================#}
+  {%- set hashFunctionPatBeg  = "CAST(HASHBYTES('MD5',"                            -%}
+  {%- set hashFunctionPatEnd  = ") AS CHAR(32))"                                   -%}
+  {%- set hashColTransPattern = "COALESCE(CAST([SRCCOL] AS VARCHAR),'null')"       -%}
+  {%- set hashConcatPattern   = " +'||'+"                                          -%}
+{#=====================================================================================#}
+  {%- for hashSource in hashColumn.hashKeySources -%}
+    {%- if loop.first -%}
+      {{- hashFunctionPatBeg -}}{%br%}
+    {%- endif -%}
+		{%- fetch hashSource.sourceColumn %}{%- fetch hashSource.sourceTable %} {%- set hashColumnName= hashSource.sourceTable.name +".[" + hashSource.sourceColumn.name + "]" -%}
+    {{indentStr}}{{- hashColTransPattern.replace("[SRCCOL]",hashColumnName) -}}
+    {%- if not loop.last -%}
+      {{- hashConcatPattern -}}{%br%}
+    {%- else -%}
+      {%br%}{{indentStr}}{{- hashFunctionPatEnd -}}
+    {%- endif -%}
+  {%- endfor -%}
+{% endmacro %}
+
+{# -- This macro adds link hash key calculations                                  -- #}
+{% macro addLinkHashKey(hashColumn, indentStr = "               ") %}
+{#=====================================================================================#}
+  {%- set hashFunctionPatBeg  = "CAST(HASHBYTES('MD5',"                            -%}
+  {%- set hashFunctionPatEnd  = ") AS CHAR(32))"                                   -%}
+  {%- set hashColTransPattern = "COALESCE(CAST([SRCCOL] AS VARCHAR),'null')"       -%}
+  {%- set hashConcatPattern   = " +'||'+"                                          -%}
+{#=====================================================================================#}
+  {%- for hashSource in hashColumn.hashKeySources -%}
+    {%- if loop.first -%}
+      {{- hashFunctionPatBeg -}}{%br%}
+    {%- endif -%}
+		{%- fetch hashSource.sourceColumn %}{%- fetch hashSource.sourceTable %} {%- set hashColumnName= hashSource.sourceTable.name +".[" + hashSource.sourceColumn.name + "]" -%}
+    {{indentStr}}{{- hashColTransPattern.replace("[SRCCOL]",hashColumnName) -}}
+    {%- if not loop.last -%}
+      {{- hashConcatPattern -}}{%br%}
+    {%- else -%}
+      {%br%}{{indentStr}}{{- hashFunctionPatEnd -}}
+    {%- endif -%}
+  {%- endfor -%}
+{% endmacro %}
+
+{# -- This macro adds change hash key calculations                                 -- #}
+{% macro addChangeHashKey(hashColumn, indentStr = "               ") %}
+{#=====================================================================================#}
+  {%- set hashFunctionPatBeg  = "CAST(HASHBYTES('MD5',"                            -%}
+  {%- set hashFunctionPatEnd  = ") AS CHAR(32))"                                   -%}
+  {%- set hashColTransPattern = "COALESCE(CAST([SRCCOL] AS VARCHAR),'null')"       -%}
+  {%- set hashConcatPattern   = " +'||'+"                                          -%}
+{#=====================================================================================#}
+  {%- for hashSource in hashColumn.hashKeySources -%}
+    {%- if loop.first -%}
+      {{- hashFunctionPatBeg -}}{%br%}
+    {%- endif -%}
+    {%- fetch hashSource.sourceColumn %}{%- fetch hashSource.sourceTable %} {%- set hashColumnName= hashSource.sourceTable.name +".[" + hashSource.sourceColumn.name + "]" -%}
+    {{indentStr}}{{- hashColTransPattern.replace("[SRCCOL]",hashColumnName) -}}
+    {%- if not loop.last -%}
+      {{- hashConcatPattern -}}{%br%}
+    {%- else -%}
+      {%br%}{{indentStr}}{{- hashFunctionPatEnd -}}
+    {%- endif -%}
+  {%- endfor -%}
+{% endmacro %}
+
+{# -- This macro adds the target columns and dss columns of the destination table-- #}
+{% macro addSetInsertTargetColumns(indentString = "  ") %}
+  {%- for column in table.columns %}
+    {%- set sTargetColumn = column.name -%}
+    {%- if loop.first -%}
+      {{indentString}}( [{{sTargetColumn}}]
+    {%- else -%}
+      {{indentString}}, [{{sTargetColumn}}]
+    {%- endif -%}
+    {%- if loop.last -%}
+      ){%br%}
+    {%- else -%}
+      {%br%}
+    {%- endif -%}
+  {%- endfor %}
+{% endmacro %}
+
+{# -- This macro adds the initial select from incoming_rows for Multi-Active Sequence Satellites that require Sequence Key generation-- #}
+{% macro addSetInsertColumnsMultiActiveSequenceSatellite(indent = "  ") %}
+  {%- for column in table.columns %}
+    {%- if not loop.first -%}{{indent}}   , {% endif %}
+    {%- if column.dssVersion -%}
+    ISNULL(current_rows.[{{ column.name }}],0) + 1
+    {%- else -%}
+    incoming_rows.[{{ column.name }}]
+    {%- endif %} AS [{{ column.name }}] {%br%}
+  {%- endfor %}
+{% endmacro %}
+{# --This macro adds the distinct keyword if configured -- #}
+{% macro distinct() %}
+{%- if table.sourceJoinDetails.distinct -%}DISTINCT {% endif -%}
+{% endmacro %}
+
+{# -- This macro adds the source columns and dss columns for stage objects -- #}
+{% macro addSetInsertColumns(indentString = "       ") %}
+  {%- for column in table.columns %}
+    {%- if not loop.first -%}{{indentString}}, {% endif %}
+    {%- if column.transform | trim != "" -%}
+      {{column.transform | trim }}
+    {%- elseif column.hubHashKey -%}
+      {{- addHubHashKey(hashColumn = column) -}}
+    {%- elseif column.linkHashKey -%}
+      {{- addLinkHashKey(hashColumn =column) -}}
+    {%- elseif column.changeHashKey -%}
+      {{- addChangeHashKey(hashColumn =column) -}}
+    {%- elseif column.updateTime or column.createTime -%}
+      CAST(CURRENT_TIMESTAMP AS DATETIME)
+    {%- else -%}
+      {%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}]
+    {%- endif %} AS [{{ column.name }}] {%br%}
+  {%- endfor %}
+{% endmacro %}
+
+{# -- This macro adds the source columns and dss columns for perm objects -- #}
+{% macro addSetInsertColumnsPerm(indentString = "       ") %}
+  {%- for column in table.columns %}
+    {%- if not loop.first -%}{{indentString}}, {% endif %}
+    {%- if column.transform | trim != "" -%}
+      {{column.transform | trim }}
+    {%- elseif column.dssVersion -%}
+      COALESCE(current_rows.[{{ column.name }}],0) + 1
+    {%- elseif column.updateTime or column.createTime or column.dssStartDate -%}
+      CAST(CURRENT_TIMESTAMP AS DATETIME)
+    {%- else -%}
+     {%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}]
+    {%- endif %} AS [{{ column.name }}] {%br%}
+  {%- endfor %}
+{% endmacro %}
+
+{# -- This macro adds the source columns and dss columns for Satellites which require Multi-Active Sequence Key generation -- #}
+{% macro addSetInsertColumnsIncomingRowsMultiActiveSequenceSatellite(indent = "      ") %}
+  {%- from table.columns as column where not column.dssVersion %}
+    {%- if not loop.first -%}{{indent}}, {% endif %}
+    {%- if column.keyType.name == "MultiActiveSequence" and column.sourceTable is empty -%}
+      {%- from table.columns as groupByHashCol where groupByHashCol.hubHashKey or groupByHashCol.linkHashKey -%}
+        {%- if groupByHashCol.linkHashKey -%}
+          {%- error "
+Multi-Active Satellite Sequence Key generation is not supported for Link Satellites, instead:
+(1) Manually add a sequence column with suitable column transform to your DV Stage.
+(2) In the Maintain Hash Key Columns Wizard model your Satellite Type as Multi-Active Natural selecting your sequence column as your key.
+Example transform: ROW_NUMBER() OVER(PARTITION BY EmployeeID ORDER BY PhoneNumber)
+" -%}
+        {%- endif -%}
+        {%- fetch groupByHashCol.sourceTable -%}
+        ROW_NUMBER() OVER( PARTITION BY {{ groupByHashCol.sourceTable.name }}.{{ groupByHashCol.sourceColumn.name }}{% br -%}
+        {{indent}}    ORDER BY {% endfrom -%}
+      {%- from table.columns as changeHashCol where changeHashCol.changeHashKey %}
+        {%- if column.changeHashMultiActiveSeqSortColumns is empty -%} ( SELECT 1 )
+        {%- else -%}
+          {#- we have sort sequence columns -#}
+          {%- fetch changeHashCol.sourceTable -%}
+          {%- for sortCol in column.changeHashMultiActiveSeqSortColumns -%}
+            {%- if not loop.first -%}{{indent}}      , {% endif -%}
+            {{ changeHashCol.sourceTable.name }}.{{ sortCol.name }}{% if not loop.last %}{% br %}{%else%} {% endif %}
+          {%- endfor %}
+        {%- endif -%}
+      {%- endfrom %}
+      {%- br %}{{indent}}  )
+    {%- elseif column.transform | trim != "" -%}
+      {{column.transform | trim }}
+    {%- elseif column.updateTime or column.createTime or column.dssStartDate -%}
+      CAST(CURRENT_TIMESTAMP AS DATETIME)
+    {%- elseif column.source is not empty -%}
+      {%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}]
+    {%- else -%}
+      CAST(NULL AS {{column.fullDataType.toUpperCase()}})
+    {%- endif %} AS [{{ column.name }}] {% br %}
+  {% endfrom %}
+{% endmacro %}
+{# -- This macro inserts the where not exists query for a hub -- #}
+{% macro addHubWhereNotExists(indent="        ") %}
+{%- if table.sourceJoinDetails.where | trim != "" %}
+AND NOT EXISTS ({%br%}
+{%- else %}
+WHERE NOT EXISTS ({%br%}
+{%- endif %}
+{{indent}}SELECT 1{%br%}
+{{indent}}FROM   [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.hubHashKey and column.artificial %}
+  {%- set outerLoop = loop %}
+  {%- for businessKeyColumn in column.hashKeyImmediateSources %}
+    {%- if outerLoop.first and loop.first %}{{indent}}WHERE  {% else %}{{indent}}AND    {% endif %}
+    {{- businessKeyColumn.source}} = {{table.name}}.{{businessKeyColumn.name}}{%br%}
+  {%- endfor %}
+{%- endfrom %}
+{{indent}}){%br%}
+{% endmacro %}
+
+{# -- This macro inserts the where not exists query for a link -- #}
+{% macro addLinkWhereNotExists(indent="        ") %}
+{%- if table.sourceJoinDetails.where | trim != "" %}
+AND NOT EXISTS ({%br%}
+{%- else %}
+WHERE NOT EXISTS ({%br%}
+{%- endif %}
+{{indent}}SELECT 1{%br%}
+{{indent}}FROM   [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.linkHashKey and column.artificial %} {#- -- The "primary" hash key for the link table is marked as artificial -- #}
+  {%- set outerLoop = loop %}
+  {%- for hashKeySourceColumn in column.hashKeyImmediateSources %}
+			{%- fetch hashKeySourceColumn.sourceColumn %}{%- fetch hashKeySourceColumn.sourceTable %} {%- set hashColumnName= hashKeySourceColumn.sourceTable.name +".[" + hashKeySourceColumn.sourceColumn.name + "]" -%}
+    {%- if outerLoop.first and loop.first %}{{indent}}WHERE  {% else %}{{indent}}AND    {% endif %}
+    {{hashColumnName}} = {{table.name}}.[{{hashKeySourceColumn.name}}]{%br%}
+  {%- endfor %}
+{%- endfrom %}
+{{indent}}){%br%}
+{% endmacro %}
+
+{# -- This macro inserts the where not exists query for a satellite -- #}
+{% macro addSatWhereNotExists(indent="        ") %}
+{%- if table.sourceJoinDetails.where | trim != "" %}
+AND NOT EXISTS ({%br%}
+{%- else %}
+WHERE NOT EXISTS ({%br%}
+{%- endif %}
+{{indent}}SELECT 1{%br%}
+{{indent}}FROM   [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.linkHashKey or column.hubHashKey or column.changeHashKey or column.dssStartDate -%}
+  {%- if loop.first %}{{indent}}WHERE  {% else %}{{indent}}AND    {% endif -%}
+  {%- if column.dssStartDate %}current_rows.[{{ column.name }}]
+  {%- else -%}{{column.source}}{%- endif %} = {{table.name}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{{indent}}){%br%}
+{% endmacro %}
+
+{# -- This macro inserts the where not exists query for a satellite with Multi-Active Sequence Key generation-- #}
+{% macro addMultiActiveSequenceSatWhereNotExists(indent="        ") %}
+{%- if settings.sourceJoinDetails.where | trim != "" %}
+AND NOT EXISTS ({%br%}
+{%- else %}
+WHERE NOT EXISTS ({%br%}
+{%- endif %}
+{{indent}}SELECT 1{%br%}
+{{indent}}FROM   [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.linkHashKey or column.hubHashKey or column.changeHashKey or column.dssStartDate or column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence" -%}
+  {%- if loop.first %}{{indent}}WHERE  {% else %}{{indent}}AND    {% endif -%}
+  {%- if column.dssStartDate %}current_rows.[{{ column.name }}]
+  {%- else -%}incoming_rows.[{{ column.name }}]{%- endif %} = {{table.name}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{{indent}}){%br%}
+{% endmacro %}
+{# -- This macro inserts the query to find the current row for a satellite -- #}
+{% macro addSatCurrentVersion(indent="        ") %}
+LEFT OUTER JOIN ({%br%}
+{{indent}}SELECT
+{%- from table.columns as column where column.hubHashKey or column.linkHashKey or column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence" %}
+  {%- if loop.first %} {% else %}{{indent}}, {% endif %}{{table.name}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{%- from table.columns as column where column.dssStartDate or column.dssVersion %}
+  {{indent}}   , MAX({{table.name}}.[{{ column.name }}]) AS [{{ column.name }}]{%br%}
+{%- endfrom %}
+{{indent}}FROM   [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.hubHashKey or column.linkHashKey %}
+  {%- if loop.first %}{{indent}}GROUP BY {% else %}{{indent}}, {% endif %}{{table.name}}.[{{ column.name }}]{%- from table.columns as column where column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence"%},{{table.name}}.[{{ column.name }}]{%- endfrom %}
+{%- endfrom %}
+{{indent}}) AS current_rows{%br%}
+{%- from table.columns as column where column.hubHashKey or column.linkHashKey or column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence" %}
+  {%- if loop.first %}      ON  {% else %}      AND {% endif %}{{column.source}} = current_rows.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{% endmacro %}
+
+{# -- This macro inserts the query to find the current row for a Satellite that requires Multi-Active Sequence Key generation -- #}
+{% macro addSatMultiActiveSequenceCurrentVersion(indent="         ") %}
+{{indent}}LEFT OUTER JOIN ({%br%}
+{{indent}}  SELECT
+{%- from table.columns as column where column.hubHashKey or column.linkHashKey or column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence" %}
+  {%- if loop.first %} {% else %}{{indent}}    , {% endif %}{{table.name}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{%- from table.columns as column where column.dssStartDate or column.dssVersion %}
+{{indent}}    , MAX({{table.name}}.[{{ column.name }}]) AS [{{ column.name }}]{%br%}
+{%- endfrom %}
+{{indent}}  FROM [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+{%- from table.columns as column where column.hubHashKey or column.linkHashKey or column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence" %}
+  {%- if loop.first %}{{indent}}  GROUP BY {% else %}{{indent}}    , {% endif %}{{table.name}}.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{{indent}}) AS current_rows{%br%}
+{%- from table.columns as column where column.hubHashKey or column.linkHashKey or column.keyType.name == "MultiActiveNatural" or column.keyType.name == "MultiActiveSequence" %}
+  {%- if loop.first %}{{indent}}ON {% else %}{{indent}}AND {% endif -%}incoming_rows.[{{ column.name }}] = current_rows.[{{ column.name }}]{%br%}
+{%- endfrom %}
+{% endmacro %}
+
+{# -- This macro inserts the procedure comment block -- #}
+{% macro addProcedureCommentBlock(indentString = "  ", commentMessage = "Hello") %}
+{{- indentString -}}--====================================================={%br%}
+{{- indentString -}}-- {{commentMessage}}{%br%}
+{{- indentString -}}--====================================================={%br%}
+{% endmacro %}

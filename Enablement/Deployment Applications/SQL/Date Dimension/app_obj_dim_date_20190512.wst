@@ -1,0 +1,6 @@
+3;61;update_stage_date_az
+1;62;daily_date_roll_az
+3;63;update_dim_date_az
+7;64;stage_date_az
+6;65;dim_date_az
+50;1;Initialize Date Dimension for Azure

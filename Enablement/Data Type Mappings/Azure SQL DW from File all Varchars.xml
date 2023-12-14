@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data_type_mapping_set name="Azure SQL DW from File all Varchars" xsi:schemaLocation="http://www.wherescape.com/xml/red ./Data%20Type%20Mapping.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.wherescape.com/xml/red">
+	<mapping_set_description></mapping_set_description>
+	<mapping_set_null_policy>AllowNulls</mapping_set_null_policy>
+	<data_type_mapping match_data_type="boolean" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="int" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="long" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="decimal" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_precision>*-12</match_precision>
+			<match_scale>0</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="decimal" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_scale>0</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="decimal" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_precision>*-12</match_precision>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="decimal" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_precision>*-12</match_precision>
+			<match_scale>0</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_scale>0</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_precision>*-12</match_precision>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="char" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_length>2-63</match_length>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="char" output_data_type="varchar(%length)">
+		<match_parameters>
+			<match_length>64-*</match_length>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="char" output_data_type="varchar(%length)"></data_type_mapping>
+	<data_type_mapping match_data_type="varchar" output_data_type="varchar(64)">
+		<match_parameters>
+			<match_length>*-63</match_length>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="varchar" output_data_type="varchar(%length)"></data_type_mapping>
+	<data_type_mapping match_data_type="date" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="time" output_data_type="varchar(64)"></data_type_mapping>
+	<data_type_mapping match_data_type="datetime" output_data_type="varchar(64)"></data_type_mapping>
+</data_type_mapping_set>

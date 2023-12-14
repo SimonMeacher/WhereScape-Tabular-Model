@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<database_function_set name="Azure SQL DW FS" xsi:schemaLocation="http://www.wherescape.com/xml/red ./Database%20Function%20Set.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.wherescape.com/xml/red">
+	<database>Azure SQL DW*</database>
+	<meta_version>1</meta_version>
+	<functional_groups>
+		<functional_group name="Mathematical">
+			<functions>
+				<function name="Absolute Value (ABS)">
+					<description>Returns the absolute value of the number. Essentially converts all values to positive.\r\nExample: ABS(load_sales.tax)</description>
+					<syntax>ABS(numeric_column)</syntax>
+					<model>ABS(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Arccosine (ACOS)">
+					<description>A mathematical function that returns the angle, in radians, whose cosine is the specified float expression; also called arccosine.</description>
+					<syntax>ACOS(numeric_column)</syntax>
+					<model>ACOS(numeric_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Arcsine (ASIN)">
+					<description>Returns the angle, in radians, whose sine is the specified float expression. This is also called arcsine.</description>
+					<syntax>ASIN(numeric_column)</syntax>
+					<model>ASIN(numeric_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Arctangent (ATAN)">
+					<description>Returns the angle in radians whose tangent is a specified float expression. This is also called arctangent.</description>
+					<syntax>ATAN(numeric_column)</syntax>
+					<model>ATAN(numeric_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="ATN2">
+					<description>Returns the angle, in radians, between the positive x-axis and the ray from the origin to the point (y, x), where x and y are the values of the two specified float expressions.</description>
+					<syntax>ATN2(float_expression, float_expression)</syntax>
+					<model>ATN2(float_expression, float_expression)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Ceiling (CEILING)">
+					<description>Returns the smallest integer or whole number that is greater than or equal to the value supplied\r\nExample: CEILING(load_sales.tax)</description>
+					<syntax>CEILING(numeric_column)</syntax>
+					<model>CEILING(numeric_column)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Cosine (COS)">
+					<description>Returns the trigonometric cosine for an angle expressed in radians.\r\nExample: COS(load_sales.value)</description>
+					<syntax>COS(numeric_column)</syntax>
+					<model>COS(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Cotangent (COT)">
+					<description>A mathematical function that returns the trigonometric cotangent of the specified angle, in radians, in the specified float expression.</description>
+					<syntax>COT(numeric_column)</syntax>
+					<model>COT(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Degrees (DEGREES)">
+					<description>Returns the corresponding angle in degrees for an angle specified in radians.</description>
+					<syntax>DEGREES(numeric_column)</syntax>
+					<model>DEGREES(numeric_column)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Exponent (EXP)">
+					<description>Returns e raised to the specified power. e = 2.718281828...\r\nExample: EXP(3)</description>
+					<syntax>EXP(numeric_column)</syntax>
+					<model>EXP(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Floor (FLOOR)">
+					<description>Returns the smallest integer or whole number that is less than or equal to the value supplied.\r\nExample: FLOOR(load_sales.tax)</description>
+					<syntax>FLOOR(numeric_column)</syntax>
+					<model>FLOOR(numeric_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>20</default_column_end>
+				</function>
+				<function name="Natural Logarithm (LOG)">
+					<description>Returns the natural, or base 'e' logarithm of the supplied value.\r\nExample: LOG(10.34)</description>
+					<syntax>LOG(numeric_column)</syntax>
+					<model>LOG(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Base 10 Logarithm (LOG10)">
+					<description>Returns the base10 logarithm of the supplied value.\r\nExample: LOG10(100)</description>
+					<syntax>LOG10(number)</syntax>
+					<model>LOG10(number)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>12</default_column_end>
+				</function>
+				<function name="PI">
+					<description>Returns the constant value of PI.</description>
+					<syntax>PI()</syntax>
+					<model>PI()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="Raise to Exponent (POWER)">
+					<description>Returns the value raise to the exponent.\r\nExample: POWER(3,3) = 27</description>
+					<syntax>POWER(numeric_column,exponent)</syntax>
+					<model>POWER(numeric_column,exponent)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>20</default_column_end>
+				</function>
+				<function name="Radians (RADIANS)">
+					<description>Returns radians when a numeric expression, in degrees, is entered.</description>
+					<syntax>RADIANS(numeric_column)</syntax>
+					<model>RADIANS(numeric_column)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Random (RAND)">
+					<description>Returns a pseudo-random float value from 0 through 1, exclusive.</description>
+					<syntax>RAND( [numeric_column] )</syntax>
+					<model>RAND()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="Round (ROUND)">
+					<description>Returns the value rounded to a given number of digits of precision.\r\nExample: ROUND(12.399,1) = 12.4</description>
+					<syntax>ROUND(numeric_column,precision)</syntax>
+					<model>ROUND(numeric_column,precision)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>20</default_column_end>
+				</function>
+				<function name="Sign (SIGN)">
+					<description>Returns either 0, 1, or -1 depending on the passed value. Zero if the passed value is zero.\r\nExample: SIGN(load_sales.value)</description>
+					<syntax>SIGN(numeric_column)</syntax>
+					<model>SIGN(numeric_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Sine (SIN)">
+					<description>Returns the trigonometric sine for an angle expressed in radians.\r\nExample: SIN(load_sales.value)</description>
+					<syntax>SIN(numeric_column)</syntax>
+					<model>SIN(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Square Root (SQRT)">
+					<description>Returns the square root of the value supplied.\r\nExample: SQRT(load_sales.value)</description>
+					<syntax>SQRT(numeric_column)</syntax>
+					<model>SQRT(numeric_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Square (SQUARE)">
+					<description>Returns the square of the specified float value.</description>
+					<syntax>SQUARE(numeric_column)</syntax>
+					<model>SQUARE(numeric_column)</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Tangent (TAN)">
+					<description>Returns the trigonometric tangent for an angle expressed in radians.\r\nExample: TAN(load_sales.value)</description>
+					<syntax>TAN(numeric_column)</syntax>
+					<model>TAN(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="String">
+			<functions>
+				<function name="ASCII value (ASCII)">
+					<description>Returns the ascii value of the first character in the string.\r\nExample: ASCII(load_customer.name)</description>
+					<syntax>ASCII(string_column)</syntax>
+					<model>ASCII(string_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Character (CHAR)">
+					<description>Returns a character whose ASCII value is the passed integer.\r\nExample: CHAR(65)</description>
+					<syntax>CHAR(integer)</syntax>
+					<model>CHAR(integer)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>12</default_column_end>
+				</function>
+				<function name="Character Index (CHARINDEX)">
+					<description>Returns an integer value containing the starting position of the search string, or zero if the search string is not found..\r\nExample: CHARINDEX('MITH',load_customer.name)\r\nNote: Wildcards may not be used.</description>
+					<syntax>CHARINDEX('search_string',string_column [,start position])</syntax>
+					<model>CHARINDEX('search_string',string_column [,start position])</model>
+					<default_column_start>26</default_column_start>
+					<default_column_end>39</default_column_end>
+				</function>
+				<function name="Concatenate (CONCAT)">
+					<description>Returns a string that is the result of concatenating two or more string values. (To add a separating value during concatenation, see CONCAT_WS.)</description>
+					<syntax>CONCAT(string_column1, string_column2 [,string_columnN])</syntax>
+					<model>CONCAT(string_column1, string_column2)</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Difference (DIFFERENCE)">
+					<description>Returns an integer value that indicates the difference between the SOUNDEX values of two character expressions.</description>
+					<syntax>DIFFERENCE(character_expression, character_expression)</syntax>
+					<model>DIFFERENCE(character_expression, character_expression)</model>
+					<default_column_start>11</default_column_start>
+					<default_column_end>31</default_column_end>
+				</function>
+				<function name="Left (LEFT)">
+					<description>Returns a string which is the leftmost characters of the passed column.\r\nExample: LEFT(load_customer.name,60)</description>
+					<syntax>LEFT(string_column,size)</syntax>
+					<model>LEFT(string_column,size)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Length (LEN)">
+					<description>Returns an integer value containing the number of characters in the string column.\r\nExample: LEN(load_customer.name)</description>
+					<syntax>LEN(string_column)</syntax>
+					<model>LEN(string_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>17</default_column_end>
+				</function>
+				<function name="Lower (LOWER)">
+					<description>Returns a string where every character in the passed column data is converted to lower case.\r\nExample: LOWER(load_customer.name)</description>
+					<syntax>LOWER(string_column)</syntax>
+					<model>LOWER(string_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Left Trim (LTRIM)">
+					<description>Returns a string which is the passed column data where all of the leading white spaces are removed.\r\nExample: LTRIM(load_customer.name)</description>
+					<syntax>LTRIM(string_column)</syntax>
+					<model>LTRIM(string_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Unicode Character (NCHAR)">
+					<description>Returns the Unicode character with the specified integer code, as defined by the Unicode standard.</description>
+					<syntax>NCHAR(integer)</syntax>
+					<model>NCHAR(integer)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>13</default_column_end>
+				</function>
+				<function name="Pattern Index (PATINDEX)">
+					<description>Returns an integer value containing the starting position of the search string, or zero if the search string is not found.\r\nExample: PATINDEX('%MITH%',load_customer.name)\r\nNote: Wildcards may be used and the string to search for will normally begin and end with the wildcard character %</description>
+					<syntax>PATINDEX('search_string',string_column)</syntax>
+					<model>PATINDEX('search_string',string_column)</model>
+					<default_column_start>25</default_column_start>
+					<default_column_end>38</default_column_end>
+				</function>
+				<function name="Quote Name (QUOTENAME)">
+					<description>Returns a Unicode string with the delimiters added to make the input string a valid SQL Server delimited identifier.</description>
+					<syntax>QUOTENAME ( character_string [ , 'quote_character' ] )</syntax>
+					<model>QUOTENAME(character_string)</model>
+					<default_column_start>10</default_column_start>
+					<default_column_end>26</default_column_end>
+				</function>
+				<function name="Replace (REPLACE)">
+					<description>Returns a string where all occurrences of the 'if' string are replaced with the 'then string.\r\nIf no 'then' string is supplied all occurrences of the 'if' string are deleted.\r\nExample: REPLACE(load_customer.name,'SMYTH','SMITH')</description>
+					<syntax>REPLACE(string_column,if,then)</syntax>
+					<model>REPLACE(string_column,if,then)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Replicate (REPLICATE)">
+					<description>Returns a string a specified number of time.\r\nExample: REPLICATE(load_customer.name,2) or REPLICATE('x',100)</description>
+					<syntax>REPLICATE(string_column,count)</syntax>
+					<model>REPLICATE(string_column,count)</model>
+					<default_column_start>10</default_column_start>
+					<default_column_end>23</default_column_end>
+				</function>
+				<function name="Reverse (REVERSE)">
+					<description>Returns a string with the characters in reverse order. (e.g. SMITH becomes HTIMS).\r\nExample: REVERSE(load_customer.name)</description>
+					<syntax>REVERSE(string_column)</syntax>
+					<model>REVERSE(string_column)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Right (RIGHT)">
+					<description>Returns a string which is the rightmost characters of the passed column.\r\nExample: RIGHT(load_customer.name,60)</description>
+					<syntax>RIGHT(string_column,size)</syntax>
+					<model>RIGHT(string_column,size)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Right Trim (RTRIM)">
+					<description>Returns a string which is the passed column data where all of the trailing white spaces are removed.\r\nExample: RTRIM(load_customer.name)</description>
+					<syntax>RTRIM(string_column)</syntax>
+					<model>RTRIM(string_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+				<function name="Sounds Like (SOUNDEX)">
+					<description>Used in a comparison situation. This function returns a sound code that can be used to compare against a second sound code.\r\nExample: CASE WHEN SOUNDEX(load_customer.last_name) = SOUNDEX('smith') THEN 'smith'\r\nELSE load_customer.last_name END</description>
+					<syntax>SOUNDEX(string_column)</syntax>
+					<model>SOUNDEX(string_column)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Space (SPACE)">
+					<description>This function returns a string of spaces of the length specified.\r\nExample: SPACE(10)</description>
+					<syntax>SPACE(size)</syntax>
+					<model>SPACE(size)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>10</default_column_end>
+				</function>
+				<function name="STR">
+					<description>Returns character data converted from numeric data.</description>
+					<syntax>STR ( float_expression [ , length [ , decimal ] ] )</syntax>
+					<model>STR(float_expression)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>20</default_column_end>
+				</function>
+				<function name="Stuff (STUFF)">
+					<description>The STUFF function inserts a string into another string. It deletes a specified length of characters in the first string at the start position and then inserts the second string into the first string at the start position.</description>
+					<syntax>STUFF ( character_expression , start , length , replaceWith_expression )</syntax>
+					<model>STUFF(character_expression, start, length, replaceWith_expression)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>26</default_column_end>
+				</function>
+				<function name="Sub String (SUBSTRING)">
+					<description>Returns a sub string of the passed column data. The start position and length of the substring are supplied.\r\nExample: SUBSTRING(load_customer.name,CHARINDEX(' ',load_customer.name)+1,10)</description>
+					<syntax>SUBSTRING(string_column, start ,count )</syntax>
+					<model>SUBSTRING(string_column, start ,count )</model>
+					<default_column_start>10</default_column_start>
+					<default_column_end>23</default_column_end>
+				</function>
+				<function name="Unicode (UNICODE)">
+					<description>Returns the integer value, as defined by the Unicode standard, for the first character of the input expression.</description>
+					<syntax>UNICODE(string_expression)</syntax>
+					<model>UNICODE(string_expression)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>25</default_column_end>
+				</function>
+				<function name="Upper (UPPER)">
+					<description>Returns a string where every character in the passed column data is converted to upper case.\r\nExample: UPPER(load_customer.name)</description>
+					<syntax>UPPER(string_column)</syntax>
+					<model>UPPER(string_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Date and time">
+			<functions>
+				<function name="Current Timestamp (CURRENT_TIMESTAMP)">
+					<description>Returns the current database system timestamp as a datetime value without the database time zone offset. This value is derived from the operating system of the computer on which the instance of SQL Server is running.</description>
+					<syntax>CURRENT_TIMESTAMP</syntax>
+					<model>CURRENT_TIMESTAMP</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="Add Date parts (DATEADD)">
+					<description>Returns a date which has a number of date parts added to the supplied date.\r\nDate parts are Year,quarter,Month,dayofyear,Day,Week,Hour,minute,second,millisecond\r\nExample: DATEADD(Day,23,load_customer.start_date)</description>
+					<syntax>DATEADD(date_part, count, date_column)</syntax>
+					<model>DATEADD(date_part, count, date_column)</model>
+					<default_column_start>26</default_column_start>
+					<default_column_end>37</default_column_end>
+				</function>
+				<function name="Date Difference (DATEDIFF)">
+					<description>Returns the number of date parts between two dates. Date parts are Year,quarter,Month,dayofyear,Day,Week,Hour,minute,second,millisecond.\r\nExample: DATEDIFF(Day,load_customer.start_date, load_customer.close_date)</description>
+					<syntax>DATEDIFF(date_part, start_date, end_date)</syntax>
+					<model>DATEDIFF(date_part, start_date, end_date)</model>
+					<default_column_start>20</default_column_start>
+					<default_column_end>30</default_column_end>
+				</function>
+				<function name="Date From Parts (DATFROMPARTS)">
+					<description>Returns a date value for the specified year, month, and day.</description>
+					<syntax>DATEFROMPARTS ( year, month, day )</syntax>
+					<model>DATEFROMPARTS(year, month, day)</model>
+					<default_column_start>14</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Date Name (DATENAME)">
+					<description>Returns a character string that represents the specified datepart of the specified date</description>
+					<syntax>DATENAME ( datepart , date )</syntax>
+					<model>DATENAME(datepart, date)</model>
+					<default_column_start>19</default_column_start>
+					<default_column_end>23</default_column_end>
+				</function>
+				<function name="Date Part (DATEPART)">
+					<description>Returns the integer value of the date part for the date supplied.\r\nDate parts are year,quarter,month,dayofyear,day,week,weekday,hour,minute,second,millisecond.\r\nExample: DATEPART(month,load_customer.start_date)</description>
+					<syntax>DATEPART(date_part,date_column)</syntax>
+					<model>DATEPART(date_part,date_column)</model>
+					<default_column_start>19</default_column_start>
+					<default_column_end>30</default_column_end>
+				</function>
+				<function name="Datetime2 From Parts (DATETIME2FROMPARTS)">
+					<description>Returns a datetime2 value for the specified date and time and with the specified precision.</description>
+					<syntax>DATETIME2FROMPARTS(year, month, day, hour, minute, seconds, fractions, precision)</syntax>
+					<model>DATETIME2FROMPARTS(year, month, day, hour, minute, seconds, fractions, precision)</model>
+					<default_column_start>19</default_column_start>
+					<default_column_end>23</default_column_end>
+				</function>
+				<function name="Datetime From Parts (DATETIMEFROMPARTS)">
+					<description>Returns a datetime value for the specified date and time.</description>
+					<syntax>DATETIMEFROMPARTS(year, month, day, hour, minute, seconds, milliseconds)</syntax>
+					<model>DATETIMEFROMPARTS(year, month, day, hour, minute, seconds, milliseconds)</model>
+					<default_column_start>18</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Datetimeoffset From Parts (DATETIMEOFFSETFROMPARTS)">
+					<description>Returns a datetimeoffset value for the specified date and time and with the specified offsets and precision.</description>
+					<syntax>DATETIMEOFFSETFROMPARTS(year, month, day, hour, minute, seconds, fractions, hour_offset, minute_offset, precision)</syntax>
+					<model>DATETIMEOFFSETFROMPARTS(year, month, day, hour, minute, seconds, fractions, hour_offset, minute_offset, precision)</model>
+					<default_column_start>24</default_column_start>
+					<default_column_end>28</default_column_end>
+				</function>
+				<function name="Day (DAY)">
+					<description>Returns the numeric day part of a date column.\r\nExample: DAY(load_customer.start_date)</description>
+					<syntax>DAY(date_column)</syntax>
+					<model>DAY(date_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>15</default_column_end>
+				</function>
+				<function name="End of Month (EOMONTH)">
+					<description>Returns the last day of the month that contains the specified date, with an optional offset.</description>
+					<syntax>EOMONTH ( start_date [, month_to_add ] )</syntax>
+					<model>EOMONTH(start_date)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Get Date (GETDATE)">
+					<description>Returns the current system date time.\r\nExample: GETDATE()</description>
+					<syntax>GETDATE()</syntax>
+					<model>GETDATE()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="Get UTC Date (GETUTCDATE)">
+					<description>Returns the current UTC date time.\r\nExample: GETUTCDATE()</description>
+					<syntax>GETUTCDATE()</syntax>
+					<model>GETUTCDATE()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="Is it a Date (ISDATE)">
+					<description>Returns 1 if the passed column is a date, 0 if not.\r\nExample: ISDATE(load_customer.start_date)</description>
+					<syntax>ISDATE(date_column)</syntax>
+					<model>ISDATE(date_column)</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Month (MONTH)">
+					<description>Returns the numeric month part of a date column.\r\nExample: MONTH(load_customer.start_date)</description>
+					<syntax>MONTH(date_column)</syntax>
+					<model>MONTH(date_column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>17</default_column_end>
+				</function>
+				<function name="Smalldatetime From Parts (SMALLDATETIMEFROMPARTS)">
+					<description>Returns a smalldatetime value for the specified date and time.</description>
+					<syntax>SMALLDATETIMEFROMPARTS(year, month, day, hour, minute)</syntax>
+					<model>SMALLDATETIMEFROMPARTS(year, month, day, hour, minute)</model>
+					<default_column_start>23</default_column_start>
+					<default_column_end>27</default_column_end>
+				</function>
+				<function name="Switch Offset (SWITCHOFFSET)">
+					<description>Returns a datetimeoffset value that is changed from the stored time zone offset to a specified new time zone offset.</description>
+					<syntax>SWITCHOFFSET(datetimeoffset, time_zone)</syntax>
+					<model>SWITCHOFFSET(datetimeoffset, time_zone )</model>
+					<default_column_start>13</default_column_start>
+					<default_column_end>27</default_column_end>
+				</function>
+				<function name="System Datetime (SYSDATETIME)">
+					<description>Returns a datetime2(7) value that contains the date and time of the computer on which the instance of SQL Server is running.</description>
+					<syntax>SYSDATETIME()</syntax>
+					<model>SYSDATETIME()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="System Datetimeoffset (SYSDATETIMEOFFSET)">
+					<description>Returns a datetimeoffset(7) value that contains the date and time of the computer on which the instance of SQL Server is running. The time zone offset is included.</description>
+					<syntax>SYSDATETIMEOFFSET()</syntax>
+					<model>SYSDATETIMEOFFSET()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="System UTC Datetime (SYSUTCDATETIME)">
+					<description>Returns a datetime2 value that contains the date and time of the computer on which the instance of SQL Server is running. The date and time is returned as UTC time (Coordinated Universal Time).\r\nThe fractional second precision specification has a range from 1 to 7 digits. The default precision is 7 digits.</description>
+					<syntax>SYSUTCDATETIME()</syntax>
+					<model>SYSUTCDATETIME()</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="Year (YEAR)">
+					<description>Returns the numeric year part of a date column.\r\nExample: YEAR(load_customer.start_date)</description>
+					<syntax>YEAR(date_column)</syntax>
+					<model>YEAR(date_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>16</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Conversion">
+			<functions>
+				<function name="Case Statement (CASE)">
+					<description>Allows the use of IF ... THEN ... ELSE logic.\r\nExample: CASE WHEN load_sample.temp1 &gt; load_sample_temp2 THEN 'Hot' ELSE 'Cold' END</description>
+					<syntax>CASE [input_expression] WHEN when_expression THEN result_expression [ ...n ] [ ELSE else_result_expression] END</syntax>
+					<model>CASE input_expression WHEN when_expression THEN result_expression [ ...n ] [ ELSE else_result_expression] END</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Cast as Type (CAST)">
+					<description>Returns the column converted to the specified data type and size.\r\nExample: CAST(load_inventory.size AS VARCHAR(20))</description>
+					<syntax>CAST(column AS data_type)</syntax>
+					<model>CAST(column AS data_type)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>11</default_column_end>
+				</function>
+				<function name="If Null Value (ISNULL)">
+					<description>Returns either the passed column or the default value if the passed column is null.\r\nExample: ISNULL(load_sales.boxes,0).</description>
+					<syntax>ISNULL(column,default_value)</syntax>
+					<model>ISNULL(column,default_value)</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>13</default_column_end>
+				</function>
+				<function name="Convert (CONVERT)">
+					<description>Returns the column converted to the specified data type, size and style (in the case of a date).\r\nCommon date styles are: 120 = yyyy-mm-dd hh:mi:ss(24h), 121 as per 120 + milliseconds, 112=yyyymmdd, 110=mm-dd-yyyy, 103=dd/mm/yyyy.\r\nExample: CONVERT( DATE, @order_date, 112)</description>
+					<syntax>CONVERT(data_type[(size)],column [,style])</syntax>
+					<model>CONVERT(data_type[(size)],column [,style])</model>
+					<default_column_start>26</default_column_start>
+					<default_column_end>33</default_column_end>
+				</function>
+				<function name="Null If Value (NULLIF)">
+					<description>Returns null if the expression matches the specified value</description>
+					<syntax>NULLIF(expression,match_value)</syntax>
+					<model>NULLIF(expression,match_value)</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>17</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Aggregate">
+			<functions>
+				<function name="Average (AVG)">
+					<description>Returns the average value for the supplied column.\r\nExample: AVG(load_inventory.temp1)</description>
+					<syntax>AVG(numeric_column)</syntax>
+					<model>AVG(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Count (COUNT)">
+					<description>Returns the count of the number of non-null values for the column.\r\nExample: COUNT(load_inventory.temp1)</description>
+					<syntax>COUNT(column)</syntax>
+					<model>COUNT(column)</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>12</default_column_end>
+				</function>
+				<function name="Count Big (COUNT_BIG)">
+					<description>Returns the number of items in a group. COUNT_BIG works like the COUNT function. The only difference between the two functions is their return values.\r\nCOUNT_BIG always returns a bigint data type value. COUNT always returns an int data type value.</description>
+					<syntax>COUNT_BIG(column)</syntax>
+					<model>COUNT_BIG(column)</model>
+					<default_column_start>10</default_column_start>
+					<default_column_end>16</default_column_end>
+				</function>
+				<function name="Maximum (MAX)">
+					<description>Returns the maximum value from the supplied column.\r\nExample: MAX(load_inventory.temp1)</description>
+					<syntax>MAX(numeric_column)</syntax>
+					<model>MAX(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Minimum (MIN)">
+					<description>Returns the minimum value from the supplied column.\r\nExample: MIN(load_inventory.temp1)</description>
+					<syntax>MIN(numeric_column)</syntax>
+					<model>MIN(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Standard Deviation (STDDEV)">
+					<description>Returns the standard deviation for the supplied column.\r\nExample: STDDEV(load_inventory.temp1)</description>
+					<syntax>STDDEV(numeric_column)</syntax>
+					<model>STDDEV(numeric_column)</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Standard Deviation POP (STDDEVP)">
+					<description>Returns the statistical standard deviation for the population for all values in the specified expression.</description>
+					<syntax>STDDEVP(numeric_column)</syntax>
+					<model>STDDEVP(numeric_column)</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Sum (SUM)">
+					<description>Returns the summed values from the supplied column.\r\nExample: SUM(load_inventory.temp1)</description>
+					<syntax>SUM(numeric_column)</syntax>
+					<model>SUM(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Variance (VAR)">
+					<description>Returns the variance for the supplied column.\r\nExample: VAR(load_inventory.temp1)</description>
+					<syntax>VAR(numeric_column)</syntax>
+					<model>VAR(numeric_column)</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Variance POP (VARP)">
+					<description>Returns the statistical variance for the population for all values in the specified expression.</description>
+					<syntax>VARP(numeric_column)</syntax>
+					<model>VARP(numeric_column)</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Analytic Aggregate">
+			<functions>
+				<function name="Average (AVG)">
+					<description>Returns the average value for the supplied column.\r\nExample: AVG(load_inventory.temp1)</description>
+					<syntax>AVG(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>AVG(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Count (COUNT)">
+					<description>Returns the count of the number of non-null values for the column.\r\nExample: COUNT(load_inventory.temp1)</description>
+					<syntax>COUNT(column) OVER ( partition_by_clause )</syntax>
+					<model>COUNT(column) OVER ( partition_by_clause )</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>12</default_column_end>
+				</function>
+				<function name="Count Big (COUNT_BIG)">
+					<description>Returns the number of items in a group. COUNT_BIG works like the COUNT function. The only difference between the two functions is their return values.\r\nCOUNT_BIG always returns a bigint data type value. COUNT always returns an int data type value.</description>
+					<syntax>COUNT_BIG(column) OVER ( partition_by_clause )</syntax>
+					<model>COUNT_BIG(column) OVER ( partition_by_clause )</model>
+					<default_column_start>10</default_column_start>
+					<default_column_end>16</default_column_end>
+				</function>
+				<function name="Maximum (MAX)">
+					<description>Returns the maximum value from the supplied column.\r\nExample: MAX(load_inventory.temp1)</description>
+					<syntax>MAX(numeric_column) OVER ( [ partition_by_clause ] [ order_by_clause ] )</syntax>
+					<model>MAX(numeric_column) OVER ( [ partition_by_clause ] [ order_by_clause ] )</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Minimum (MIN)">
+					<description>Returns the minimum value from the supplied column.\r\nExample: MIN(load_inventory.temp1)</description>
+					<syntax>MIN(numeric_column) OVER ( [ partition_by_clause ] [ order_by_clause ] )</syntax>
+					<model>MIN(numeric_column) OVER ( [ partition_by_clause ] [ order_by_clause ] )</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Standard Deviation (STDDEV)">
+					<description>Returns the standard deviation for the supplied column.\r\nExample: STDDEV(load_inventory.temp1)</description>
+					<syntax>STDDEV(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>STDDEV(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>7</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Standard Deviation POP (STDDEVP)">
+					<description>Returns the statistical standard deviation for the population for all values in the specified expression.</description>
+					<syntax>STDDEVP(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>STDDEVP(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>8</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Sum (SUM)">
+					<description>Returns the summed values from the supplied column.\r\nExample: SUM(load_inventory.temp1)</description>
+					<syntax>SUM(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>SUM(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Variance (VAR)">
+					<description>Returns the variance for the supplied column.\r\nExample: VAR(load_inventory.temp1)</description>
+					<syntax>VAR(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>VAR(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>18</default_column_end>
+				</function>
+				<function name="Variance POP (VARP)">
+					<description>Returns the statistical variance for the population for all values in the specified expression.</description>
+					<syntax>VARP(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>VARP(numeric_column) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>19</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Analytic">
+			<functions>
+				<function name="Cumulative Distribution (CUME_DIST)">
+					<description>Calculates the cumulative distribution of a value in a group of values in SQL Server.</description>
+					<syntax>CUME_DIST() OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>CUME_DIST() OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>19</default_column_start>
+					<default_column_end>58</default_column_end>
+				</function>
+				<function name="First Value (FIRST_VALUE)">
+					<description>Returns the first value in an ordered set of values.</description>
+					<syntax>FIRST_VALUE ( [scalar_expression ] ) OVER ( [ partition_by_clause ] order_by_clause [ rows_range_clause ] )</syntax>
+					<model>FIRST_VALUE ( [scalar_expression ] ) OVER ( [ partition_by_clause ] order_by_clause [ rows_range_clause ] )</model>
+					<default_column_start>14</default_column_start>
+					<default_column_end>34</default_column_end>
+				</function>
+				<function name="Lag (LAG)">
+					<description>Accesses data from a previous row in the same result set without the use of a self-join. LAG provides access to a row at a given physical offset that comes before the current row.</description>
+					<syntax>LAG ( scalar_expression [,offset] [,default] ) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>LAG(scalar_expression, offset ,default) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>4</default_column_start>
+					<default_column_end>21</default_column_end>
+				</function>
+				<function name="Last Value (LAST_VALUE)">
+					<description>Returns the last value in an ordered set of values.</description>
+					<syntax>LAST_VALUE ( [scalar_expression ] ) OVER ( [ partition_by_clause ] order_by_clause [ rows_range_clause ] )</syntax>
+					<model>LAST_VALUE ( [scalar_expression ] ) OVER ( [ partition_by_clause ] order_by_clause [ rows_range_clause ] )</model>
+					<default_column_start>13</default_column_start>
+					<default_column_end>33</default_column_end>
+				</function>
+				<function name="Lead (LEAD)">
+					<description>Accesses data from a subsequent row in the same result set without the use of a self-join. LEAD provides access to a row at a given physical offset that comes after the current row.</description>
+					<syntax>LEAD ( scalar_expression [,offset] [,default] ) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>LEAD(scalar_expression, offset ,default) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>5</default_column_start>
+					<default_column_end>22</default_column_end>
+				</function>
+				<function name="Percentile Continuous Distribution (PERCENTILE_CONT)">
+					<description>Calculates a percentile based on a continuous distribution of the column value in SQL Server. The result is interpolated and might not be equal to any of the specific values in the column.</description>
+					<syntax>PERCENTILE_CONT ( numeric_literal ) WITHIN GROUP ( ORDER BY order_by_expression [ ASC | DESC ] ) OVER ( partition_by_clause )</syntax>
+					<model>PERCENTILE_CONT( numeric_literal ) WITHIN GROUP ( ORDER BY order_by_expression ) OVER ( partition_by_clause )</model>
+					<default_column_start>17</default_column_start>
+					<default_column_end>32</default_column_end>
+				</function>
+				<function name="Percentile Discrete Distribution (PERCENTILE_DISC)">
+					<description>Calculates a percentile based on a discrete distribution of the column value.</description>
+					<syntax>PERCENTILE_DISC ( numeric_literal ) WITHIN GROUP ( ORDER BY order_by_expression [ ASC | DESC ] ) OVER ( partition_by_clause )</syntax>
+					<model>PERCENTILE_DISC( numeric_literal ) WITHIN GROUP ( ORDER BY order_by_expression ) OVER ( partition_by_clause )</model>
+					<default_column_start>17</default_column_start>
+					<default_column_end>32</default_column_end>
+				</function>
+				<function name="Percent Rank (PERCENT_RANK)">
+					<description>Calculates the relative rank of a row within a group of rows in SQL Server 2017. Use PERCENT_RANK to evaluate the relative standing of a value within a query result set or partition. PERCENT_RANK is similar to the CUME_DIST function.</description>
+					<syntax>PERCENT_RANK() OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>PERCENT_RANK() OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>22</default_column_start>
+					<default_column_end>61</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Ranking">
+			<functions>
+				<function name="Dense Rank (DENSE_RANK)">
+					<description>Returns the rank of rows within the partition of a result set, without any gaps in the ranking. The rank of a row is one plus the number of distinct ranks that come before the row in question.</description>
+					<syntax>DENSE_RANK ( ) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>DENSE_RANK() OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>20</default_column_start>
+					<default_column_end>59</default_column_end>
+				</function>
+				<function name="NTILE">
+					<description>Distributes the rows in an ordered partition into a specified number of groups. The groups are numbered, starting at one. For each row, NTILE returns the number of the group to which the row belongs.</description>
+					<syntax>NTILE (integer_expression) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>NTILE(integer_expression) OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>6</default_column_start>
+					<default_column_end>24</default_column_end>
+				</function>
+				<function name="Rank (RANK)">
+					<description>Returns the rank of each row within the partition of a result set. The rank of a row is one plus the number of ranks that come before the row in question.</description>
+					<syntax>RANK ( ) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>RANK() OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>14</default_column_start>
+					<default_column_end>53</default_column_end>
+				</function>
+				<function name="Row Number (ROW_NUMBER)">
+					<description>Numbers the output of a result set. More specifically, returns the sequential number of a row within a partition of a result set, starting at 1 for the first row in each partition.</description>
+					<syntax>ROW_NUMBER( ) OVER ( [ partition_by_clause ] order_by_clause )</syntax>
+					<model>ROW_NUMBER() OVER ( [ partition_by_clause ] order_by_clause )</model>
+					<default_column_start>20</default_column_start>
+					<default_column_end>59</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Hash">
+			<functions>
+				<function name="HASHBYTES_MD5">
+					<description>Returns the MD5 hash of its input.</description>
+					<syntax>HASHBYTES('MD5', string_expression)</syntax>
+					<model>HASHBYTES('MD5', string_expression)</model>
+					<default_column_start>17</default_column_start>
+					<default_column_end>34</default_column_end>
+				</function>
+				<function name="HASHBYTES_SHA256">
+					<description>Returns the SHA2 hash of its input.</description>
+					<syntax>HASHBYTES('SHA2_256', string_expression)</syntax>
+					<model>HASHBYTES('SHA2_256', string_expression)</model>
+					<default_column_start>22</default_column_start>
+					<default_column_end>39</default_column_end>
+				</function>
+				<function name="HASHBYTES">
+					<description>Returns the MD2, MD4, MD5, SHA, SHA1, or SHA2 hash of its input.</description>
+					<syntax>HASHBYTES('MD2 | MD4 | MD5 | SHA | SHA1 | SHA2_256 | SHA2_512', string_expression)</syntax>
+					<model>HASHBYTES('algorithm', string_expression)</model>
+					<default_column_start>23</default_column_start>
+					<default_column_end>40</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+		<functional_group name="Operator">
+			<functions>
+				<function name="+">
+					<description>Inserts the concatenation operator to allow adding of two strings.\r\nExample: load_customer.first_name + ' ' +load_customer.last_name</description>
+					<syntax>+</syntax>
+					<model>+</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="-">
+					<description>Inserts the minus operator to allow subtraction of two numbers.\r\nExample: load_sales.base - load_sales.gst</description>
+					<syntax>-</syntax>
+					<model>-</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="/">
+					<description>Inserts the divide operator to allow division of two numbers.\r\nExample: load_sales.base / load_sales.gst</description>
+					<syntax>/</syntax>
+					<model>/</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="*">
+					<description>Inserts the multiply operator to allow multiplication of two numbers.\r\nExample: load_sales.base * load_sales.gst</description>
+					<syntax>*</syntax>
+					<model>*</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name=" ">
+					<description>Inserts the space character for clarity or other purposes.</description>
+					<syntax>
+					</syntax>
+					<model>\r\n					</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name="(">
+					<description>Inserts the open bracket, used for setting precedence in result evaluation.</description>
+					<syntax>(</syntax>
+					<model>(</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+				<function name=")">
+					<description>Inserts the close bracket, used for setting precedence in result evaluation.</description>
+					<syntax>)</syntax>
+					<model>)</model>
+					<default_column_start>0</default_column_start>
+					<default_column_end>0</default_column_end>
+				</function>
+			</functions>
+		</functional_group>
+	</functional_groups>
+</database_function_set>

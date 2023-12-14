@@ -1,0 +1,52 @@
+{# -- TemplateVersion:002 MinVersion:8010 MaxVersion:* TargetType:AzureDW Objects:* TemplateType:DDL                                                        -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DW                                                                                                                     -- #}
+{# -- Template Name      : wsl_azdw_create_view                                                                                                             -- #}
+{# -- Template Version   : 8.0.1.0                                                                                                                          -- #}
+{# -- Description        : This template creates a Azure SQL DW database view                                                                               -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# -- TK: Azure SQL DW Release 1.0.0 (2017-08-03)                                                                                                           -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+CREATE VIEW $SCHEMA$.$TABLE$ ({% br %}
+  {%- for column in table.columns %}
+  {%- if loop.first %}  {% endif -%}
+  {%- if not loop.first %} ,{% endif %} [{{column.name}}]{%- br -%}
+  {% endfor %}
+){% br %}
+{% if table.storage.optionalCreateClause != "" -%}
+WITH ({% br %}
+  {{table.storage.optionalCreateClause}}{% br %}
+){% br %}
+{%- endif -%}
+AS{% br %}
+SELECT{%- br %}
+{%- for column in table.columns %}
+{%- fetch column.sourceColumn %}{%- fetch column.sourceTable %}
+  {%- set sSourceColumn = column.sourceTable.name+".["+column.sourceColumn.name+"]" %}
+  {%- if loop.last -%}
+    {{sSourceColumn }}{%- br %}
+  {%- else -%}
+    {{sSourceColumn }},{%- br %}
+  {%- endif -%}
+{%- endfor -%}
+{%- fetch table.columns[0].sourceTable -%}
+{%- set sSource = table.columns[0].sourceTable.name -%}
+{%- if table.viewInfo.whereClause | trim != "" %}
+  {%- if (table.viewInfo.whereClause | trim).toUpperCase().indexOf("FROM") != 0 -%}
+    FROM $DATABASE$.$SCHEMA$.[{{sSource }}]{% br %}
+  {%- endif %}
+  {{- table.viewInfo.whereClause}}{% br -%}
+{% else -%}
+  FROM $DATABASE$.$SCHEMA$.[{{sSource }}]{% br -%}
+{%- endif %}{% br -%}
+

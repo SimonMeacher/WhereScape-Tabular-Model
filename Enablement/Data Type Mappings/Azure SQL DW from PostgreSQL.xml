@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data_type_mapping_set name="Azure SQL DW from PostgreSQL" xsi:schemaLocation="http://www.wherescape.com/xml/red ./Data%20Type%20Mapping.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.wherescape.com/xml/red">
+	<mapping_set_description></mapping_set_description>
+	<mapping_set_null_policy>AllowNulls</mapping_set_null_policy>
+	<data_type_mapping match_data_type="varchar" output_data_type="varchar(%precision)">
+		<match_parameters>
+			<match_precision>1-8000</match_precision>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="varchar" output_data_type="varchar(8000)">
+		<match_parameters>
+			<match_precision>8001-*</match_precision>
+		</match_parameters>
+		<transform_code>SUBSTRING(%column_name FROM 1 FOR 8000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="date" output_data_type="date">
+		<transform_code>TO_CHAR(%column_name,'YYYY-MM-DD')</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="timestamp" output_data_type="datetime">
+		<transform_code>TO_CHAR(%column_name,'YYYY-MM-DD HH24:MI:SS')</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="time" output_data_type="time"></data_type_mapping>
+	<data_type_mapping match_data_type="money" output_data_type="money"></data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="decimal(%precision)">
+		<match_parameters>
+			<match_precision>1-38</match_precision>
+			<match_scale>0</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="decimal(%precision,%scale)">
+		<match_parameters>
+			<match_precision>1-38</match_precision>
+			<match_scale>1-38</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="decimal(38)">
+		<match_parameters>
+			<match_precision>39-*</match_precision>
+			<match_scale>0</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="decimal(38,%scale)">
+		<match_parameters>
+			<match_precision>39-*</match_precision>
+			<match_scale>1-38</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="numeric" output_data_type="decimal(38,38)">
+		<match_parameters>
+			<match_precision>39-*</match_precision>
+			<match_scale>39-*</match_scale>
+		</match_parameters>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="bpchar" output_data_type="varchar(%precision)">
+		<match_parameters>
+			<match_precision>1-8000</match_precision>
+		</match_parameters>
+		<transform_code>TRIM( TRAILING ' ' FROM %column_name)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="bpchar" output_data_type="varchar(8000)">
+		<match_parameters>
+			<match_precision>8000-*</match_precision>
+		</match_parameters>
+		<transform_code>SUBSTRING(TRIM( TRAILING ' ' FROM %column_name) FROM 1 FOR 8000)</transform_code>
+	</data_type_mapping>
+	<data_type_mapping match_data_type="float4" output_data_type="real"></data_type_mapping>
+	<data_type_mapping match_data_type="float8" output_data_type="float"></data_type_mapping>
+	<data_type_mapping match_data_type="int2" output_data_type="smallint"></data_type_mapping>
+	<data_type_mapping match_data_type="int4" output_data_type="integer"></data_type_mapping>
+	<data_type_mapping match_data_type="int8" output_data_type="bigint"></data_type_mapping>
+	<data_type_mapping match_data_type="text" output_data_type="varchar(8000)">
+		<transform_code>SUBSTRING(%column_name FROM 1 FOR 8000)</transform_code>
+	</data_type_mapping>
+</data_type_mapping_set>

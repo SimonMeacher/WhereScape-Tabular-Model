@@ -1,0 +1,9 @@
+48;DAzure_SQL_DW
+49;ODatabase Source System
+1;DRepository
+3;WRuntime Connection for Scripts
+50;WWindows
+_WS&TARGET_load;1;48;13;wtd;REPO;;;TGTCOLOR=000000255;
+_WS&TARGET_stage;2;48;13;wtd;REPO;;;TGTCOLOR=012582990;
+_WS&TARGET_edw;3;48;13;wtd;REPO;;;TGTCOLOR=005537792;
+_WS&TARGET_data_vault;4;48;13;wtd;REPO;;;TGTCOLOR=000032960;

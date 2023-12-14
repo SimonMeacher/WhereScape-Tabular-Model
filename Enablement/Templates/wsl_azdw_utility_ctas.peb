@@ -1,0 +1,401 @@
+{# -- TemplateVersion:003 MinVersion:8010 MaxVersion:* TargetType:AzureDW Objects:STAR,NORMAL,ODS TemplateType:Utility                                      -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DataWarehouse                                                                                                          -- #}
+{# -- Template Name      : wsl_azdw_utility_ctas                                                                                                            -- #}
+{# -- RED Version        : 8.0.1.0                                                                                                                          -- #}
+{# -- Description        : Generic macros that can be used to define specific templates for Azure SQL DataWarehouse                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# -- TK: Azure SQL Datawarehouse Release 1.0.0 (2017-06-06)                                                                                                -- #}
+{# -- PC: Fix bugs where dss_load_date & dss_record_source were not populated (2019-09-24)                                                                  -- #}
+{# -- PM: WTD-45 preserve nullablility during CTAS                                                                                                          -- #}
+{# -- PM: addType2TrackedWhereNullSCD macro added to check NULL SCD new record                                                                              -- #}
+{% macro addOptionalCreateClause ( indent = "    " ) %}
+  {%- for optLine in table.storage.optionalCreateClause | trim | lines -%}
+    {{- indent }}{{ optLine }}{% br %}
+  {%- endfor -%}
+{% endmacro %}
+
+{% macro addChangedRowSelect ( indent = "  ", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- CHANGED ROWS{%br%}
+  {{- indent }}SELECT
+  {%- from table.columns as column %}
+    {%- if not loop.first %}{{- indent }}     , {% else %} {% endif -%}
+    {%- if column.artificial -%}
+      ISNULL(CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}),0) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.name == dssDeleteTime -%}
+      CAST({{ table.name }}.[{{ column.name }}] AS [{{ column.fullDataType }}]) AS [{{ column.name }}]{%- br -%}
+    {%- elseif not column.dss -%}
+		{%- if not column.nullAllowed %}
+		{%- if column.defaultValue != "" -%}ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}),CONVERT({{ column.fullDataType }},{{column.defaultValue}})) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.dataType == "decimal" or column.dataType == "numeric"%}ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}),0) AS [{{ column.name }}]{%- br -%}
+    {% else %}ISNULL(CAST([{%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}),CONVERT({{ column.fullDataType }},'')) AS [{{ column.name }}]{%- br -%}
+    {% endif %}
+    {%- else -%}
+      CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+		{% endif -%}
+    {%- else -%}
+      {%- if column.updateTime -%}
+        CAST(CURRENT_TIMESTAMP AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.createTime -%}
+        CAST({{ table.name }}.[{{ column.name }}]AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssRecordSource -%}
+        CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssLoadDate -%}
+        CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssStartDate -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssEndDate -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssVersion -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.currentFlag -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- else -%}
+        CAST(NULL AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addUnchangedRowSelect ( indent = "  " ) %}
+  {{- indent }}-- UNCHANGED ROWS{%br%}
+  {{- indent }}SELECT
+  {%- from table.columns as column %}
+    {%- if not loop.first %}{{- indent }}     , {% else %} {% endif -%}
+		{%- if not column.nullAllowed %}
+		{%- if column.defaultValue != "" -%}ISNULL(CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}),CONVERT({{ column.fullDataType }},{{column.defaultValue}})) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.dataType == "decimal"or column.dataType == "numeric" %}ISNULL(CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}),0) AS [{{ column.name }}]{%- br -%}
+    {% else %}ISNULL(CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}),CONVERT({{ column.fullDataType }},'')) AS [{{ column.name }}]{%- br -%}
+   {% endif %}
+    {%- else -%}
+    CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+	 {% endif -%}
+
+  {%- endfrom %}
+{% endmacro %}
+{% macro addDeletedRowSelect ( indent = "  ", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- DELETED ROWS{% br %}
+  {{- indent }}SELECT
+  {%- from table.columns as column -%}
+    {%- if not loop.first -%}{{- indent }}     , {% else %} {% endif -%}
+    {%- if column.currentFlag -%}
+      CAST('N' AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.dssEndDate -%}
+      CAST({{ settings.changeDetectionEndExpiring }} AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.name == dssDeleteTime -%}
+      CAST(CURRENT_TIMESTAMP AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- else -%}
+      CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- endif -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addZeroKeySelect ( indent = "  " ) %}
+  {{- indent }}-- ZERO KEY ROW{%br%}
+  {{- indent }}SELECT
+  {%- from table.columns as column %}
+    {%- if not loop.first %}{{- indent }}     , {% else %} {% endif -%}
+    CAST({{ table.name }}.[{{ column.name }}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addType2ExpiringRowSelect ( indent = "  " ) %}
+  {{- indent }}-- EXPIRING ROWS{%br%}
+  {{- indent }}SELECT
+  {%- from table.columns as column %}
+    {%- if not loop.first %}{{- indent }}     , {% else %} {% endif -%}
+    {%- if column.currentFlag -%}
+      CAST('N' AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- elseif not column.dss -%}
+      CAST({{ table.name }}.[{{ column.name}}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- else -%}
+      {%- if column.updateTime -%}
+        CAST({{ table.name}}.[{{column.name}}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.createTime -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssStartDate -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssEndDate -%}
+        CAST({{settings.changeDetectionEndExpiring}} AS {{column.fullDataType}}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssVersion -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssRecordSource -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssLoadDate -%}
+        CAST({{ table.name }}.[{{ column.name }}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- else -%}
+        CAST(NULL AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addNewRowSelect ( indent = "  ", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- NEW ROWS{%br%}
+  {{- indent }}SELECT {{ distinct() -}}
+  {%- from table.columns as column -%}
+    {%- if not loop.first %}{{- indent }}     , {% endif -%}
+    {%- if column.transform | trim != "" -%}
+      {%- from ( column.transform | trim | lines ) as transLine -%}
+        {%- if not loop.first %}{{- indent }}       {% endif -%}
+        {{ transLine }}{% br %}
+      {%- endfrom -%}
+    {%- elseif column.artificial -%}
+      {%- from table.columns as bkCol where bkCol.businessKey -%}
+        {%- if loop.first -%}
+          ISNULL(CAST(ROW_NUMBER() OVER(ORDER BY {{ bkCol.source }}) + COALESCE(maxkey.maxkey,0) AS {{ column.fullDataType }}),0) AS [{{ column.name }}]{%- br -%}
+        {%- endif -%}
+      {%- endfrom -%}
+    {%- elseif column.name == dssDeleteTime -%}
+      CAST(NULL AS {{ column.fullDataType }}) AS [{{column.name }}]{%- br -%}
+    {%- elseif column.currentFlag -%}
+      CAST('Y' AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- elseif not column.dss -%}
+		{%- if not column.nullAllowed %}
+		{%- if column.defaultValue != "" -%}ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}),CONVERT({{ column.fullDataType }},{{column.defaultValue}})) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.dataType == "decimal" or column.dataType == "numeric"%}ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}),0) AS [{{ column.name }}]{%- br -%}
+    {% else %}ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}),CONVERT({{ column.fullDataType }},''))AS [{{ column.name }}]{%- br -%}
+    {% endif %}
+    {%- else -%}
+      CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+            {% endif %}
+    {%- else -%}
+      {%- if column.updateTime -%}
+        CAST(CURRENT_TIMESTAMP AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.createTime -%}
+        CAST(CURRENT_TIMESTAMP AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssStartDate -%}
+        CAST((CASE WHEN {{table.name}}.[{{column.name}}] IS NOT NULL{% br %}
+        {{- indent }}               THEN {{settings.changeDetectionStartNew}}{% br %}
+        {{- indent }}               ELSE {{settings.changeDetectionStartInitial}}{% br %}
+        {{- indent }}             END{% br %}
+        {{- indent }}       ) AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssEndDate -%}
+        CAST({{settings.changeDetectionEndCurrent}} AS {{column.fullDataType}}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssVersion -%}
+        CAST(COALESCE({{table.name}}.[{{column.name}}],0) + 1 AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssRecordSource -%}
+        CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssLoadDate -%}
+        CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- else -%}
+        CAST(NULL AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addNewRowSelectNoCross ( indent = "  ", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- NEW ROWS{%br%}
+  {{- indent }}SELECT {{ distinct() -}}
+  {%- from table.columns as column %}
+    {%- if not loop.first %}{{- indent }}     , {% endif -%}
+    {%- if column.transform | trim != "" -%}
+      {%- from column.transform | trim | lines as transLine -%}
+        {%- if not loop.first %}{{- indent }}       {% endif -%}
+        {{ transLine }}{% br %}
+      {%- endfrom -%}
+    {%- elseif column.artificial -%}
+      CAST(ROW_NUMBER() OVER() + COALESCE($maxKey,0) AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- elseif column.name == dssDeleteTime -%}
+      CAST(NULL AS {{ column.fullDataType }}) AS [{{column.name }}]{%- br -%}
+    {%- elseif column.currentFlag -%}
+      CAST('Y' AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- elseif not column.dss -%}
+      CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+    {%- else -%}
+      {%- if column.updateTime -%}
+        CAST(CURRENT_TIMESTAMP AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.createTime -%}
+        CAST(CURRENT_TIMESTAMP AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssStartDate -%}
+        CAST((CASE WHEN {{table.name}}.[{{column.name}}] IS NOT NULL{% br %}
+        {{- indent }}               THEN {{settings.changeDetectionStartNew}}{% br %}
+        {{- indent }}               ELSE {{settings.changeDetectionStartInitial}}{% br %}
+        {{- indent }}             END{% br %}
+        {{- indent }}       ) AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssEndDate -%}
+        CAST({{settings.changeDetectionEndCurrent}} AS {{column.fullDataType}}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssVersion -%}
+        CAST(COALESCE({{table.name}}.[{{column.name}}],0) + 1 AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssRecordSource -%}
+        CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- elseif column.dssLoadDate -%}
+        CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS {{column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- else -%}
+        CAST(NULL AS {{ column.fullDataType }}) AS [{{ column.name }}]{%- br -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addFromClause ( indent = "  " ) %}
+  {%- for joinLine in (table.sourceJoinDetails.join | trim | lines)%}{{ indent }}{{ joinLine | trim }}{%br%}{%- endfor %}
+{% endmacro %}
+
+{% macro addWhereClause ( indent = "  " ) %}
+  {%- for whereLine in (table.sourceJoinDetails.where | trim | lines)%}{{ indent }}{{whereLine | trim}}{%br%}{%- endfor%}
+{% endmacro %}
+
+{% macro addGroupByClause ( indent = "  " ) %}
+  {%- for groupByLine in (table.sourceJoinDetails.groupBy | trim | lines)%}{{ indent }}{{groupByLine | trim}}{%br%}{%- endfor %}
+{% endmacro %}
+
+{% macro addJoinToTarget ( joinType = "INNER", indent = "  " ) %}
+  {{- indent}}{{ joinType }} JOIN [TABLEOWNER].[{{table.name}}] {{table.name}}{%br%}
+  {%- from table.columns as column where column.businessKey %}
+    {%- if loop.first %}{{- indent}}ON {%- else %}{{- indent}}AND {%- endif %} {%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] = {{table.name}}.[{{column.name}}]{%br%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addType2TrackedWhereNullSCD ( indent = "  ", comparison = "=", whereType = "AND", compareType = "OR", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- tracked columns{% br %}
+	{%- from table.columns as column where column.businessKey %}
+	{%- if loop.first -%}{{- indent }}(
+  {%- endif %}
+     ( {%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] IS NOT NULL AND {{table.name}}.[{{column.name}}] IS NULL) AND{%br%}
+  {%- endfrom %}
+  {%- from table.columns as column where column.slowlyChanging %}
+  ({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] IS NULL AND {{table.name}}.[{{column.name}}] IS NULL ){%- if not loop.last %} AND{%br%}{%- endif %}
+    {%- if loop.last %}{{- indent }}){%br%}{%- endif %}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addType2TrackedWhere ( indent = "  ", comparison = "=", whereType = "AND", compareType = "OR", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- tracked columns{% br %}
+  {%- from table.columns as column where column.slowlyChanging %}
+    {%- if loop.first -%}{{- indent }}{{ whereType }} (
+    {%- else %}{{- indent }}  {{ compareType }}
+    {%- endif %} COALESCE(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS VARCHAR(8000)),'~') {{ comparison }} COALESCE(CAST({{table.name}}.[{{column.name}}] AS VARCHAR(8000)),'~'){%br%}
+    {%- if loop.last %}{{- indent }}){%br%}{%- endif %}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addType2UntrackedWhere ( indent = "  ", comparison = "=", whereType = "AND", compareType = "OR", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}-- untracked columns{% br %}
+  {%- from table.columns as column where not ( column.slowlyChanging or column.businessKey or column.dss or column.artificial or ( column.name == dssDeleteTime ) ) %}
+    {%- if loop.first %}{{- indent }}{{ whereType }} (
+    {%- else %}{{- indent}}  {{ compareType }}
+    {%- endif %} COALESCE(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS VARCHAR(8000)),'~') {{ comparison }} COALESCE(CAST({{table.name}}.[{{column.name}}] AS VARCHAR(8000)),'~'){%br%}
+    {%- if loop.last %}{{- indent }}){%br%}{%- endif %}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addChangedWhere ( indent = "  ", comparison = "<>", whereType = "AND", compareType = "OR", dssDeleteTime = dssDeleteTime ) %}
+  {%- from table.columns as column where not ( column.businessKey or column.dss or column.artificial or column.name == dssDeleteTime ) %}
+    {%- if loop.first %}{{ indent }}{{ whereType }} ({{ indent }}
+    {%- else %}{{ indent }}{{ compareType }}
+    {% endif %}{%- if column.nullAllowed -%}COALESCE(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS VARCHAR(8000)),'~') {{ comparison }} COALESCE(CAST({{table.name}}.[{{column.name}}] AS VARCHAR(8000)),'~'){%br%}
+    {%- else -%}ISNULL(CAST({%- fetch column.sourceColumn %}{%- fetch column.sourceTable %} {{column.sourceTable.name}}.[{{column.sourceColumn.name}}] AS VARCHAR(8000)),'~') {{ comparison }} ISNULL(CAST({{table.name}}.[{{column.name}}] AS VARCHAR(8000)),'~'){%br%}{% endif %}
+    {%- if loop.last %}  ){%br%}{%- endif %}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addDeletedWhere ( indent = "  ", whereType = "AND", dssDeleteTime = dssDeleteTime, hasArtificial = hasArtificial ) %}
+  {%- from table.columns as bkCol where bkCol.businessKey -%}
+    {%- if loop.first -%}{{- indent }}{{ whereType }}
+    {%- else -%}{{- indent}}AND
+    {%- endif %} {{ bkCol.source }} IS NULL{% br %}
+  {%- endfrom -%}
+  {%- from table.columns as currentFlag where currentFlag.currentFlag -%}
+    {{- indent }}AND {{ table.name }}.{{ currentFlag.name }} = 'Y'{% br %}
+  {%- endfrom -%}
+  {{- indent }}AND {{ table.name }}.{{ dssDeleteTime }} IS NULL{% br -%}
+  {%- if settings.insertZeroKeyRecord and hasArtificial -%}
+    {%- from table.columns as artificialKey where artificialKey.artificial -%}
+      {{- indent }}AND {{ table.name }}.{{ artificialKey.name }} <> 0{% br -%}
+    {%- endfrom -%}
+  {%- endif -%}
+  {{- indent }}AND rc.rc > 0
+{% endmacro %}
+
+{% macro addDeletedWhereNoCross ( indent = "  ", whereType = "AND", dssDeleteTime = dssDeleteTime, hasArtificial = hasArtificial ) %}
+  {%- from table.columns as bkCol where bkCol.businessKey -%}
+    {%- if loop.first -%}{{- indent }}{{ whereType }}
+    {%- else -%}{{- indent}}AND
+    {%- endif %} {{ bkCol.source }} IS NULL{% br %}
+  {%- endfrom -%}
+  {%- from table.columns as currentFlag where currentFlag.currentFlag -%}
+    {{- indent }}AND {{ table.name }}.{{ currentFlag.name }} = 'Y'{% br %}
+  {%- endfrom -%}
+  {{- indent }}AND {{ table.name }}.{{ dssDeleteTime }} IS NULL{% br -%}
+  {%- if settings.insertZeroKeyRecord and hasArtificial -%}
+    {%- from table.columns as artificialKey where artificialKey.artificial -%}
+      {{- indent }}AND {{ table.name }}.{{ artificialKey.name }} <> 0{% br -%}
+    {%- endfrom -%}
+  {%- endif -%}
+  {{- indent }}AND $rowCount > 0
+{% endmacro %}
+
+{% macro addMaxKeyJoin ( indent = "  " ) %}
+  {%- from table.columns as artificialKey where artificialKey.artificial -%}
+    {%- if loop.first -%}
+      {{- indent }}CROSS JOIN ( SELECT MAX({{artificialKey.name}}) AS maxkey FROM [TABLEOWNER].[{{table.name}}]) AS maxkey{% br %}
+    {%- endif -%}
+  {%- endfrom %}
+{% endmacro %}
+
+{% macro addRowCountJoin ( indent = "  " ) %}
+  {{- indent }}CROSS JOIN ( SELECT COUNT(*) AS rc{% br %} {{- addFromClause ( indent = indent + "             " ) }}{{ indent }}) AS rc{% br %}
+{% endmacro %}
+
+{% macro addCurrentOrDeletedJoin ( indent = "  ", dssDeleteTime = dssDeleteTime ) %}
+  {{- indent }}LEFT OUTER JOIN ({% br %}
+  {{- indent }}  SELECT {% from table.columns as bkCol where bkCol.businessKey -%}
+                          {%- if not loop.first %}{{- indent }}       , {% endif -%}
+                          COALESCE(curr.{{ bkCol.name }},del.{{ bkCol.name }}) AS {{ bkCol.name }}{% br %}
+                        {%- endfrom -%}
+  {{- indent }}       , CASE WHEN COALESCE(curr.max_version,0) > COALESCE(del.max_version,0){% br %}
+  {{- indent }}              THEN curr.max_version{% br %}
+  {{- indent }}              ELSE del.max_version{% br %}
+  {{- indent }}              END AS max_version{% br %}
+  {{- indent }}       , CASE WHEN COALESCE(curr.max_version,0) > COALESCE(del.max_version,0){% br %}
+  {{- indent }}              THEN 'C'{% br %}
+  {{- indent }}              ELSE 'D'{% br %}
+  {{- indent }}              END AS max_version_type{% br %}
+  {{- indent }}  FROM ({% br %}
+  {{- indent }}    SELECT {% from table.columns as bkCol where bkCol.businessKey -%}
+                            {%- if not loop.first %}{{- indent }}         , {% endif -%}
+                            {{- bkCol.name }}{% br %}
+                          {%- endfrom -%}
+  {{- indent }}         , {% from table.columns as dssVersion where dssVersion.dssVersion %}MAX({{ dssVersion.name }}) AS max_version{% br %}{% endfrom %}
+  {{- indent }}    FROM [TABLEOWNER].[{{ table.name }}] {{ table.name }}{% br %}
+  {{- indent }}    WHERE {{dssDeleteTime}} IS NOT NULL{% br %}
+  {{- indent }}    GROUP BY {% from table.columns as bkCol where bkCol.businessKey -%}{%- if not loop.first %}, {% endif -%}{{ bkCol.name }}{% endfrom %}{% br %}
+  {{- indent }}  ) AS del{% br %}
+  {{- indent }}  LEFT OUTER JOIN ({% br %}
+  {{- indent }}    SELECT {% from table.columns as bkCol where bkCol.businessKey -%}
+                            {%- if not loop.first %}{{- indent }}         , {% endif -%}
+                            {{- bkCol.name }}{% br %}
+                          {%- endfrom -%}
+  {{- indent }}         , {% from table.columns as dssVersion where dssVersion.dssVersion %}MAX({{ dssVersion.name }}) AS max_version{% br %}{% endfrom %}
+  {{- indent }}    FROM [TABLEOWNER].[{{ table.name }}] {{ table.name }}{% br %}
+  {{- indent }}    WHERE {% from table.columns as currentFlag where currentFlag.currentFlag %}{{ currentFlag.name }} = 'Y'{% br %}{% endfrom %}
+  {{- indent }}    GROUP BY {% from table.columns as bkCol where bkCol.businessKey -%}{%- if not loop.first %}, {% endif -%}{{ bkCol.name }}{% endfrom %}{% br %}
+  {{- indent }}  ) AS curr{% br %}
+  {%- from table.columns as bkCol where bkCol.businessKey -%}
+    {{- indent -}}
+    {%- if loop.first %}  ON {% else %}  AND {% endif -%}
+    del.{{ bkCol.name }} = curr.{{ bkCol.name }}{% br %}
+  {%- endfrom -%}
+  {{- indent }}) AS delOrCurr{% br %}
+  {%- from table.columns as bkCol where bkCol.businessKey -%}
+    {{- indent -}}
+    {%- if loop.first %}ON {% else %}AND {% endif -%}
+    delOrCurr.{{ bkCol.name }} = {{ bkCol.source }}{% br %}
+  {%- endfrom -%}
+{% endmacro %}
+
+{# --This macro adds the distinct keyword if configured -- #}
+{% macro distinct() %}
+{%- if table.sourceJoinDetails.distinct %}DISTINCT {% endif -%}
+{% endmacro %}

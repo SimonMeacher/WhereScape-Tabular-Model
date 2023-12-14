@@ -1,0 +1,37 @@
+{# -- TemplateVersion:002 MinVersion:8010 MaxVersion:* TargetType:AzureDW Objects:CUSTOM1 TemplateType:DDL                                                  -- #}
+{# --                                                                                                                                                       -- #}
+{# --    (c) WhereScape Inc 2020. WhereScape Inc permits you to copy this Template solely for use with the RED software, and to modify this Template        -- #}
+{# --    for the purposes of using that modified Template with the RED software, but does not permit copying or modification for any other purpose.         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# -- DBMS Name          : Azure SQL DW                                                                                                                     -- #}
+{# -- Template Name      : wsl_azdw_create_file_format                                                                                                      -- #}
+{# -- Template Version   : 8.0.1.0                                                                                                                          -- #}
+{# -- Description        : This template creates a Azure SQL DW database file format object                                                                 -- #}
+{# --                                                                                                                                                       -- #}
+{# -- =============================================================================                                                                         -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{# -- Notes / History                                                                                                                                       -- #}
+{# -- TK: Azure SQL DW Release 1.0.0 (2017-10-03)                                                                                                           -- #}
+{# --                                                                                                                                                       -- #}
+{# --                                                                                                                                                       -- #}
+{%- fetch table.target -%}
+IF EXISTS (SELECT * FROM sys.external_file_formats WHERE name = '{{table.name}}' ){%br%}
+  DROP EXTERNAL FILE FORMAT {{table.name}}{%br%}
+;{%br%}
+{%br%}
+CREATE EXTERNAL FILE FORMAT {{table.name}}{%br%}
+WITH ({%br%}
+{%- from table.columns as opt where opt.displayName != "FORMAT_OPTIONS" %}
+  {%- if not loop.first %}, {% else %}  {% endif %}
+  {{- opt.name }} = {{ opt.fullDataType }}{%br%}
+{%- endfrom %}
+{%- from table.columns as opt where opt.displayName == "FORMAT_OPTIONS" %}
+  {%- if loop.first %}, FORMAT_OPTIONS ({%br%}    {% else %}  , {% endif %}
+    {{- opt.name }} = {{ opt.fullDataType }}{%br%}
+  {% if loop.last %}){%br%}{% endif %}
+{%- endfrom %}
+){%br%}
+;

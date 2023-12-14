@@ -1,0 +1,13 @@
+47;DAzure DW Warehouse
+48;ODatabase Source System
+215;ZGCS
+1;DRepository
+3;WRuntime Connection for Scripts
+60;OSales
+49;WWindows
+246;ZWindows_File_Parser
+75;OWslTutorial_DataSeq
+_WS&TARGET_load;1;47;13;wtd;repo;;;TGTCOLOR=000000255;
+_WS&TARGET_stage;2;47;13;wtd;repo;;;TGTCOLOR=012582990;
+_WS&TARGET_edw;3;47;13;wtd;repo;;;TGTCOLOR=005537792;
+_WS&TARGET_data_vault;4;47;13;wtd;repo;;;TGTCOLOR=000032960;
